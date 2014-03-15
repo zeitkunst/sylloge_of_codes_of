@@ -1,0 +1,2 @@
+ofxTextSuite
+ofxSQLite

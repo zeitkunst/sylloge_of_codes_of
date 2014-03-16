@@ -14,7 +14,7 @@
 #include "ofMain.h"
 #include "ofxTextSuite.h"
 #include "ofxSQLiteHeaders.h"
-#include "ofxTimeline.h"
+//#include "ofxTimeline.h"
 
 using Poco::Timestamp;
 using Poco::DateTime;
@@ -94,9 +94,9 @@ class testApp : public ofBaseApp{
 
         // Current sylloge item
         Sylloge currentCode;
-        
         float alpha;
-        ofxTimeline timeline;
+        //ofxTimeline timeline;        
+
     private:
         vector<CodeDuration> codes;
 

@@ -1,8 +1,2 @@
-ofxXmlSettings
-ofxMSATimer
 ofxSQLite
-ofxTextInputField
 ofxTextSuite
-ofxTimecode
-ofxTimeline
-ofxTween

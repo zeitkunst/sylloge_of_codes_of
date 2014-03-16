@@ -1,23 +1,16 @@
-#include "testApp.h"
-
+#include "sylloge_of_codes.h"
 
 //--------------------------------------------------------------
-void testApp::setup(){
+void sylloge_of_codes::setup(){
     char *sql;
     const char* msg = "Callback function called";
     completeText = "Aenean laoreet feugiat turpis eget ultrices. Curabitur viverra aliquam neque, quis interdum augue tempor bibendum. Integer tempus non sapien ut fringilla. Suspendisse potenti. Nullam ultricies pharetra accumsan. Donec aliquam ligula orci, quis aliquam urna bibendum eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed in quam sed risus sodales sollicitudin. Vivamus scelerisque lacinia eros, et vulputate magna laoreet sed. Praesent ultricies elit eu accumsan ornare. Aliquam consequat viverra magna, vitae egestas lorem dictum ut.\n Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam egestas justo felis, et condimentum diam malesuada sit amet. Donec luctus imperdiet dignissim. Sed auctor, leo ac gravida placerat, odio nibh vestibulum nisl, ut dictum tortor dui ut nulla. Curabitur scelerisque quam erat, sed faucibus mi suscipit eu. Vestibulum tortor lacus, varius et orci a, cursus tempor risus. \n Curabitur nisl tortor, elementum sagittis felis eu, pharetra accumsan purus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc molestie nec turpis ut euismod. Cras dignissim laoreet ipsum, ut facilisis nisl. Nulla rhoncus bibendum arcu fringilla tristique. Nullam mattis fringilla odio, tincidunt ullamcorper tellus elementum nec. Pellentesque sed lacinia ipsum. Integer at magna quis ante luctus convallis. Proin non urna in nunc dictum vestibulum. Nunc adipiscing mauris ante, a commodo leo dictum et. Pellentesque aliquam magna diam, quis volutpat ante egestas id. Fusce id scelerisque purus.";
 
-	ofBackground(0, 0, 0);
-	ofFill();
     ofSetFrameRate(30);
     ofEnableAlphaBlending();
     ofHideCursor();
 	ofSetColor(255, 255, 255, 255);
     alpha = 0;
-
-    timeline.setup();
-    timeline.addBangs("texts");
-    timeline.setLoopType(OF_LOOP_NORMAL);
 
     CodeDuration code;
     code.code = "Hello World";
@@ -87,6 +80,32 @@ void testApp::setup(){
 
 	ofBackground(255,255,255);
 
+    ofxTextBlock intro;
+    intro.init("SourceSansPro-Black.otf", 60);
+    intro.setText("sylloge of codes");
+    intro.wrapTextX(ofGetWidth() - (0.1 * ofGetWidth()));
+    intro.setColor(255, 255, 255, 255);
+    Segment segment;
+    segment.startTime = 0.0;
+    segment.delta = 0.0;
+    segment.duration = 3.0;
+    segment.fadeDuration = 0.1;
+    segment.textBlock = intro;
+    segment.xPos = centerX(intro);
+    segment.yPos = centerY(intro);
+    addToSequence(segment, sequence);
+
+    segment.startTime = 1.0;
+    segment.delta = 3.0;
+    segment.duration = 4.0;
+    segment.fadeDuration = 0.1;
+    intro.setText("THIS IS A TEST");
+    intro.wrapTextX(ofGetWidth());
+    segment.textBlock = intro;
+    segment.xPos = centerX(intro);
+    segment.yPos = centerY(intro) + 40;
+    addToSequence(segment, sequence);
+
 	testFont.loadFont("AJensonPro-Regular.otf", 160, true, true, true);
 	testFont2.loadFont("SourceSansPro-Regular.otf", 52, true, true, true);
 
@@ -124,7 +143,32 @@ void testApp::setup(){
 
 }
 
-int testApp::basicCallback(void *data, int argc, char **argv, char **azColName) {
+void sylloge_of_codes::addToSequence(Segment& segment, vector<Segment>& sequence) {
+    ofLog(OF_LOG_NOTICE, "sequence length: %d", sequence.size());
+    
+    Segment previousSegment;
+    if (sequence.size() != 0) {
+        previousSegment = sequence.at(sequence.size() - 1);
+        segment.startTime = previousSegment.startTime + previousSegment.duration + segment.delta;
+    }
+    sequence.push_back(segment);
+}
+
+float sylloge_of_codes::centerX(ofxTextBlock textBlock) {
+    float textWidth = textBlock.getWidth();
+    float textCenter = textWidth / 2.0f;
+
+    return (ofGetWindowWidth()/2 - textCenter);
+}
+
+float sylloge_of_codes::centerY(ofxTextBlock textBlock) {
+    float textHeight = textBlock.getHeight();
+    float textCenter = textHeight/ 2.0f;
+
+    return (ofGetWindowHeight()/2 - textCenter);
+}
+
+int sylloge_of_codes::basicCallback(void *data, int argc, char **argv, char **azColName) {
     int i;
     ofLog(OF_LOG_NOTICE, "%s: ", (const char*)data);
     for (i = 0; i < argc; i++) {
@@ -134,20 +178,41 @@ int testApp::basicCallback(void *data, int argc, char **argv, char **azColName) 
     return 0;
 }
 
-void testApp::setSyllogeCount() {
+void sylloge_of_codes::setSyllogeCount() {
     ofxSQLiteSelect sel = sqlite->select("count(*) as total").from("sylloge");
     sel.execute().begin();
     syllogeCount = sel.getInt();
 }
 
 //--------------------------------------------------------------
-void testApp::update(){
+void sylloge_of_codes::update(){
 
 }
 
 //--------------------------------------------------------------
-void testApp::draw(){
-    timeline.draw();
+void sylloge_of_codes::draw(){
+	ofBackground(0, 0, 0);
+	ofFill();
+
+    if (SYLLOGE_DEBUG) {
+        elapsedTimeString = "Elapsed time: " + ofToString(ofGetElapsedTimef());
+        ofDrawBitmapString(elapsedTimeString, 10, 10);
+    }
+
+    Segment segment;
+    for (int index = 0; index < sequence.size(); ++index) {
+        segment = sequence.at(index);
+        if (segment.startTime < ofGetElapsedTimef()) {
+            if (ofGetElapsedTimef() > (segment.startTime + segment.duration)) {
+                continue;
+            } else {
+                segment.textBlock.draw(segment.xPos, segment.yPos);
+            }
+        }
+    }
+
+    //Segment segment = sequence.at(0);
+    //segment.textBlock.draw(segment.xPos, segment.yPos);
 
     // To fade in and out: need to figure out way to draw text with an alpha
     // Can also use this to calculate incremental changes: ofLerp()
@@ -157,114 +222,49 @@ void testApp::draw(){
 	i18nText.setColor(255, 255, 255, alpha);
 
     // Here's the sequence:
-
     myText.draw(ofGetWidth()/2, 15);
     i18nText.draw(5, 15);
 
-/*
-//	ofBeginShape();
-//		ofVertex(100, 100);
-//		ofVertex(200, 200);
-//		ofVertex(100, 200);
-//	ofEndShape(true);
-//
-	//ofDrawBitmapString("fps: "+ofToString(ofGetFrameRate()), 10, 10);
-	//ofDrawBitmapString("press a key to see it as a texture and as a vector. ", 10, 24);
-
-	testFont2.drawString("Hello - I am bitmap", 15, 400);
-
-	ofFill();
-	testFont2.drawStringAsShapes("Hello - I am vector", 15, 480);
-	ofNoFill();
-	testFont2.drawStringAsShapes("Hello - I am vector", 15, 550);
-
-	//lets draw the key pressed as a tex and a vector both fill and no fill
-	//here we show how easy it is to get
-
-	string str = "";
-	str += char(letter);
-
-	testFont.drawString(str, 50, 250);
-
-	//okay lets get the character back as shapes
-	testChar.setFilled(true);
-    testChar.draw(200,250);
-    testChar.setFilled(false);
-    testChar.draw(350,250);
-
-
-    // we can also access the individual points
-	ofFill();
-	ofPushMatrix();
-		ofTranslate(550, 250, 0);
-		ofBeginShape();
-			for(int k = 0; k <(int)testChar.getOutline().size(); k++){
-				if( k!= 0)ofNextContour(true) ;
-				for(int i = 0; i < (int)testChar.getOutline()[k].size(); i++){
-					ofVertex(testChar.getOutline()[k].getVertices()[i].x, testChar.getOutline()[k].getVertices()[i].y);
-				}
-			}
-		ofEndShape( true );
-	ofPopMatrix();
-
-	ofNoFill();
-	ofPushMatrix();
-		ofTranslate(700, 250, 0);
-		ofBeginShape();
-			for(int k = 0; k <(int)testChar.getOutline().size(); k++){
-				if( k!= 0)ofNextContour(true) ;
-				for(int i = 0; i < (int)testChar.getOutline()[k].size(); i++){
-					ofVertex(testChar.getOutline()[k].getVertices()[i].x, testChar.getOutline()[k].getVertices()[i].y);
-				}
-			}
-		ofEndShape( true );
-	ofPopMatrix();
-*/
-
-}
-
-
-//--------------------------------------------------------------
-void testApp::keyPressed  (int key){
-	if(key==OF_KEY_ESC) return;
-	testChar = testFont.getCharacterAsPoints(key);
-	letter = key;
 }
 
 //--------------------------------------------------------------
-void testApp::keyReleased  (int key){
+void sylloge_of_codes::keyPressed (int key){
 }
 
 //--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ){
+void sylloge_of_codes::keyReleased  (int key){
 }
 
 //--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
+void sylloge_of_codes::mouseMoved(int x, int y ){
 }
 
 //--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){
+void sylloge_of_codes::mouseDragged(int x, int y, int button){
+}
+
+//--------------------------------------------------------------
+void sylloge_of_codes::mousePressed(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){
+void sylloge_of_codes::mouseReleased(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void testApp::windowResized(int w, int h){
+void sylloge_of_codes::windowResized(int w, int h){
 
 }
 
 //--------------------------------------------------------------
-void testApp::gotMessage(ofMessage msg){
+void sylloge_of_codes::gotMessage(ofMessage msg){
 
 }
 
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){
+void sylloge_of_codes::dragEvent(ofDragInfo dragInfo){
 
 }
 
@@ -324,7 +324,7 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 
     sqlite3_close(db);
 
-int testApp::basicCallback(void *data, int argc, char **argv, char **azColName) {
+int sylloge_of_codes::basicCallback(void *data, int argc, char **argv, char **azColName) {
     int i;
     ofLog(OF_LOG_NOTICE, "%s: ", (const char*)data);
     for (i = 0; i < argc; i++) {

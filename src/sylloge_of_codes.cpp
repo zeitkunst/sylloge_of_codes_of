@@ -27,8 +27,6 @@ void sylloge_of_codes::setup(){
     DateTimeParser::parse(DateTimeFormat::RFC1123_FORMAT, s, dt, tzd);
     Poco::Timestamp ts = dt.timestamp();
     Poco::LocalDateTime ldt(tzd, dt);
-    bool ok = DateTimeParser::tryParse("2006-10-22", dt, tzd);
-    ok = DateTimeParser::tryParse("%e.%n.%Y", "22.10.2006", dt, tzd);
 
    // make DB QUERY
     sqlite = new ofxSQLite("/Users/nknouf/src/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite"); 
@@ -194,6 +192,12 @@ void sylloge_of_codes::draw(){
                 segment.textBlock.draw(segment.xPos, segment.yPos);
             }
         }
+    }
+
+    // Check if we need to loop back to the beginning
+    segment = sequence.at(sequence.size() - 1);
+    if (ofGetElapsedTimef() > (segment.startTime + segment.duration + segment.delta)) {
+        ofResetElapsedTimeCounter();
     }
 
 //    // To fade in and out: need to figure out way to draw text with an alpha

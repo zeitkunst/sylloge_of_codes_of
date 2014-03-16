@@ -78,6 +78,7 @@
 # incorporated directly into the final executable application binary.
 # TODO: should this be a default setting?
 #PROJECT_LDFLAGS=-Wl,-rpath=./libs,-llibintl
+PROJECT_LDFLAGS=-L/opt/local/lib -lintl -framework OpenAL  ../../../addons/obj/osx/Release/ofxTimeline/src/ofxHotKeys_impl_mac.o ../../../addons/obj/osx/Release/ofxTimeline/src/ofxRemoveCocoaMenu.o
 
 ################################################################################
 # PROJECT DEFINES
@@ -105,7 +106,7 @@
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-PROJECT_CFLAGS = -I/opt/local/include -std=gnu++0x -D__STDC_INT64__ -D__STDC_CONSTANT_MACROS
+PROJECT_CFLAGS = -I/opt/local/include -arch i386
 
 ################################################################################
 # PROJECT OPTIMIZATION CFLAGS
@@ -138,5 +139,5 @@ PROJECT_CFLAGS = -I/opt/local/include -std=gnu++0x -D__STDC_INT64__ -D__STDC_CON
 #		(default) PROJECT_CC = (blank)
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-PROJECT_CXX = g++-4.7
-PROJECT_CC = gcc-4.7
+# PROJECT_CXX =
+# PROJECT_CC = 

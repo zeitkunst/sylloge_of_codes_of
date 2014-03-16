@@ -41,6 +41,8 @@ struct Segment {
     float delta;        // in seconds;
     float duration;     // in seconds
     float fadeDuration; // in seconds
+    bool fade;
+    float currentAlpha;
     ofxTextBlock textBlock;    
     int xPos;
     int yPos;
@@ -92,12 +94,6 @@ class sylloge_of_codes : public ofBaseApp{
         // Text offset in pixels
         static const int offset = 15;
 
-        sqlite3 *db;
-        char *zErrMsg;
-        int rc;
-        char *code1;
-        char *code2;
-
         ofxSQLite* sqlite;
 
         // Current number of entries in the database
@@ -109,6 +105,7 @@ class sylloge_of_codes : public ofBaseApp{
         float centerX(ofxTextBlock textBlock);
         float centerY(ofxTextBlock textBlock);
         void addToSequence(Segment& segment, vector<Segment>& sequence);
+        void segmentFadeIn(Segment& segment);
     private:
         string elapsedTimeString;
         vector<CodeDuration> codes;

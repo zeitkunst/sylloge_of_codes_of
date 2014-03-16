@@ -6,7 +6,7 @@
 //========================================================================
 int main( ){
     
-    ofSetLogLevel(OF_LOG_VERBOSE);    
+    ofSetLogLevel(OF_LOG_NOTICE);    
     bindtextdomain("sylloge_of_codes", "../");
     textdomain("sylloge_of_codes");
 	ofSetupOpenGL(1280, 800, OF_WINDOW);			// <-------- setup the GL context

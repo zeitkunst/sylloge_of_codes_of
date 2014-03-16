@@ -2,8 +2,6 @@
 
 //--------------------------------------------------------------
 void sylloge_of_codes::setup(){
-    char *sql;
-    const char* msg = "Callback function called";
     completeText = "Aenean laoreet feugiat turpis eget ultrices. Curabitur viverra aliquam neque, quis interdum augue tempor bibendum. Integer tempus non sapien ut fringilla. Suspendisse potenti. Nullam ultricies pharetra accumsan. Donec aliquam ligula orci, quis aliquam urna bibendum eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed in quam sed risus sodales sollicitudin. Vivamus scelerisque lacinia eros, et vulputate magna laoreet sed. Praesent ultricies elit eu accumsan ornare. Aliquam consequat viverra magna, vitae egestas lorem dictum ut.\n Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam egestas justo felis, et condimentum diam malesuada sit amet. Donec luctus imperdiet dignissim. Sed auctor, leo ac gravida placerat, odio nibh vestibulum nisl, ut dictum tortor dui ut nulla. Curabitur scelerisque quam erat, sed faucibus mi suscipit eu. Vestibulum tortor lacus, varius et orci a, cursus tempor risus. \n Curabitur nisl tortor, elementum sagittis felis eu, pharetra accumsan purus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc molestie nec turpis ut euismod. Cras dignissim laoreet ipsum, ut facilisis nisl. Nulla rhoncus bibendum arcu fringilla tristique. Nullam mattis fringilla odio, tincidunt ullamcorper tellus elementum nec. Pellentesque sed lacinia ipsum. Integer at magna quis ante luctus convallis. Proin non urna in nunc dictum vestibulum. Nunc adipiscing mauris ante, a commodo leo dictum et. Pellentesque aliquam magna diam, quis volutpat ante egestas id. Fusce id scelerisque purus.";
 
     ofSetFrameRate(30);
@@ -32,26 +30,8 @@ void sylloge_of_codes::setup(){
     bool ok = DateTimeParser::tryParse("2006-10-22", dt, tzd);
     ok = DateTimeParser::tryParse("%e.%n.%Y", "22.10.2006", dt, tzd);
 
-    rc = sqlite3_open("/home/pi/src/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite", &db);
-
-    if (rc) {
-        ofLog(OF_LOG_NOTICE, "Can't open database: %s\n", sqlite3_errmsg(db));
-    } else {
-        ofLog(OF_LOG_NOTICE, "Opened database successfully\n");
-    }
-
-    sql = "SELECT * from sylloge";
-
-    rc = sqlite3_exec(db, sql, basicCallback, (void*)msg, &zErrMsg);
-    if (rc != SQLITE_OK) {
-        ofLog(OF_LOG_ERROR, "SQL error: %s\n", zErrMsg);
-        sqlite3_free(zErrMsg);
-    } else {
-        ofLog(OF_LOG_NOTICE, "Select done successfully\n");
-    }
-
    // make DB QUERY
-    sqlite = new ofxSQLite("/home/pi/src/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite"); 
+    sqlite = new ofxSQLite("/Users/nknouf/src/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite"); 
 
     setSyllogeCount();
     cout << "total number of entires: " << syllogeCount << endl;
@@ -82,28 +62,32 @@ void sylloge_of_codes::setup(){
 
     ofxTextBlock intro;
     intro.init("SourceSansPro-Black.otf", 60);
-    intro.setText("sylloge of codes");
+    intro.setText(gettext("sylloge of codes"));
     intro.wrapTextX(ofGetWidth() - (0.1 * ofGetWidth()));
     intro.setColor(255, 255, 255, 255);
     Segment segment;
     segment.startTime = 0.0;
     segment.delta = 0.0;
-    segment.duration = 3.0;
+    segment.duration = 10.0;
     segment.fadeDuration = 0.1;
+    segment.fade = true;
     segment.textBlock = intro;
     segment.xPos = centerX(intro);
     segment.yPos = centerY(intro);
     addToSequence(segment, sequence);
 
-    segment.startTime = 1.0;
+
+    intro.init("AJensonPro-Regular.otf", 30);
+    intro.setText(gettext("Consider this an invitation. An invitation to develop new codes for communication. In the wake of the revelations that the United States' National Security Agency (NSA) and the United Kingdom's General Communications Headquarters (GCHQ) monitor large swaths of our online communications, we cannot explicitly trust that what we think is safe from eavesdropping actually is."));
+    intro.wrapTextX(0.7 * ofGetWidth());
+    intro.setColor(255, 255, 255, 255);
+    segment.startTime = 0.0;
     segment.delta = 3.0;
-    segment.duration = 4.0;
-    segment.fadeDuration = 0.1;
-    intro.setText("THIS IS A TEST");
-    intro.wrapTextX(ofGetWidth());
+    segment.duration = 15.0;
+    segment.fade = true;
     segment.textBlock = intro;
-    segment.xPos = centerX(intro);
-    segment.yPos = centerY(intro) + 40;
+    segment.xPos = 0.25 * ofGetWidth();
+    segment.yPos = 10;
     addToSequence(segment, sequence);
 
 	testFont.loadFont("AJensonPro-Regular.otf", 160, true, true, true);
@@ -136,11 +120,6 @@ void sylloge_of_codes::setup(){
 	letter = '$';
 	testChar = testFont.getCharacterAsPoints(letter);
 	//ofSetFullscreen(true);
-
-
-    sqlite3_close(db);
-
-
 }
 
 void sylloge_of_codes::addToSequence(Segment& segment, vector<Segment>& sequence) {
@@ -150,6 +129,12 @@ void sylloge_of_codes::addToSequence(Segment& segment, vector<Segment>& sequence
     if (sequence.size() != 0) {
         previousSegment = sequence.at(sequence.size() - 1);
         segment.startTime = previousSegment.startTime + previousSegment.duration + segment.delta;
+    }
+
+    if (segment.fadeDuration != 0) {
+        segment.currentAlpha = 0.0;
+    } else {
+        segment.currentAlpha = 255.0;
     }
     sequence.push_back(segment);
 }
@@ -168,16 +153,6 @@ float sylloge_of_codes::centerY(ofxTextBlock textBlock) {
     return (ofGetWindowHeight()/2 - textCenter);
 }
 
-int sylloge_of_codes::basicCallback(void *data, int argc, char **argv, char **azColName) {
-    int i;
-    ofLog(OF_LOG_NOTICE, "%s: ", (const char*)data);
-    for (i = 0; i < argc; i++) {
-        ofLog(OF_LOG_NOTICE, "%s = %s\n", azColName[i], argv [i] ? argv[i] : "NULL");
-    }
-    printf("\n");
-    return 0;
-}
-
 void sylloge_of_codes::setSyllogeCount() {
     ofxSQLiteSelect sel = sqlite->select("count(*) as total").from("sylloge");
     sel.execute().begin();
@@ -187,6 +162,11 @@ void sylloge_of_codes::setSyllogeCount() {
 //--------------------------------------------------------------
 void sylloge_of_codes::update(){
 
+}
+
+void sylloge_of_codes::segmentFadeIn(Segment& segment) {
+    segment.currentAlpha = ofLerp(segment.currentAlpha, 255, 0.02);
+    segment.textBlock.setColor(255, 255, 255, segment.currentAlpha);
 }
 
 //--------------------------------------------------------------
@@ -206,23 +186,25 @@ void sylloge_of_codes::draw(){
             if (ofGetElapsedTimef() > (segment.startTime + segment.duration)) {
                 continue;
             } else {
+                // TODO
+                // Fix fading in and out
+                //if (segment.fade) {
+                //    segmentFadeIn(segment);
+                //}
                 segment.textBlock.draw(segment.xPos, segment.yPos);
             }
         }
     }
 
-    //Segment segment = sequence.at(0);
-    //segment.textBlock.draw(segment.xPos, segment.yPos);
-
-    // To fade in and out: need to figure out way to draw text with an alpha
-    // Can also use this to calculate incremental changes: ofLerp()
-    alpha = ofLerp(alpha, 255, 0.02);
-	myText.setColor(255, 255, 255, alpha);
-	i18nText.setColor(255, 255, 255, alpha);
-
-    // Here's the sequence:
-    myText.draw(ofGetWidth()/2, 15);
-    i18nText.draw(5, 15);
+//    // To fade in and out: need to figure out way to draw text with an alpha
+//    // Can also use this to calculate incremental changes: ofLerp()
+//    alpha = ofLerp(alpha, 255, 0.02);
+//	myText.setColor(255, 255, 255, alpha);
+//	i18nText.setColor(255, 255, 255, alpha);
+//
+//    // Here's the sequence:
+//    myText.draw(ofGetWidth()/2, 15);
+//    i18nText.draw(5, 15);
 
 }
 

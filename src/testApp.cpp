@@ -7,6 +7,29 @@ void testApp::setup(){
     const char* msg = "Callback function called";
     completeText = "Aenean laoreet feugiat turpis eget ultrices. Curabitur viverra aliquam neque, quis interdum augue tempor bibendum. Integer tempus non sapien ut fringilla. Suspendisse potenti. Nullam ultricies pharetra accumsan. Donec aliquam ligula orci, quis aliquam urna bibendum eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed in quam sed risus sodales sollicitudin. Vivamus scelerisque lacinia eros, et vulputate magna laoreet sed. Praesent ultricies elit eu accumsan ornare. Aliquam consequat viverra magna, vitae egestas lorem dictum ut.\n Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam egestas justo felis, et condimentum diam malesuada sit amet. Donec luctus imperdiet dignissim. Sed auctor, leo ac gravida placerat, odio nibh vestibulum nisl, ut dictum tortor dui ut nulla. Curabitur scelerisque quam erat, sed faucibus mi suscipit eu. Vestibulum tortor lacus, varius et orci a, cursus tempor risus. \n Curabitur nisl tortor, elementum sagittis felis eu, pharetra accumsan purus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc molestie nec turpis ut euismod. Cras dignissim laoreet ipsum, ut facilisis nisl. Nulla rhoncus bibendum arcu fringilla tristique. Nullam mattis fringilla odio, tincidunt ullamcorper tellus elementum nec. Pellentesque sed lacinia ipsum. Integer at magna quis ante luctus convallis. Proin non urna in nunc dictum vestibulum. Nunc adipiscing mauris ante, a commodo leo dictum et. Pellentesque aliquam magna diam, quis volutpat ante egestas id. Fusce id scelerisque purus.";
 
+	ofBackground(0, 0, 0);
+	ofFill();
+    ofSetFrameRate(30);
+    ofEnableAlphaBlending();
+    ofHideCursor();
+	ofSetColor(255, 255, 255, 255);
+    alpha = 0;
+
+    timeline.setup();
+    timeline.addBangs("texts");
+    timeline.setLoopType(OF_LOOP_NORMAL);
+
+    CodeDuration code;
+    code.code = "Hello World";
+    code.duration = 5.0;
+    codes.push_back(code);
+    code.code = "This is a test";
+    code.duration = 5.0;
+    codes.push_back(code);
+    code.code = completeText;
+    code.duration = 5.0;
+    codes.push_back(code);
+
     std::string s("Sat, 1 Jan 2005 12:00:00 GMT");
     int tzd;
     DateTime dt;
@@ -124,12 +147,20 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	ofBackground(0, 0, 0);
-	ofSetColor(255, 255, 255);
-	ofFill();
+    timeline.draw();
+
+    // To fade in and out: need to figure out way to draw text with an alpha
+    // Can also use this to calculate incremental changes: ofLerp()
+    
+    alpha = ofLerp(alpha, 255, 0.02);
+	myText.setColor(255, 255, 255, alpha);
+	i18nText.setColor(255, 255, 255, alpha);
+
+    // Here's the sequence:
 
     myText.draw(ofGetWidth()/2, 15);
     i18nText.draw(5, 15);
+
 /*
 //	ofBeginShape();
 //		ofVertex(100, 100);

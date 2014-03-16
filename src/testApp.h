@@ -14,6 +14,7 @@
 #include "ofMain.h"
 #include "ofxTextSuite.h"
 #include "ofxSQLiteHeaders.h"
+#include "ofxTimeline.h"
 
 using Poco::Timestamp;
 using Poco::DateTime;
@@ -32,6 +33,11 @@ struct Sylloge {
     string pseudonym;
     DateTime code_dt;
     bool enabled;
+};
+
+struct CodeDuration {
+    string code;
+    float duration;
 };
 
 class testApp : public ofBaseApp{
@@ -89,8 +95,10 @@ class testApp : public ofBaseApp{
         // Current sylloge item
         Sylloge currentCode;
         
-
+        float alpha;
+        ofxTimeline timeline;
     private:
+        vector<CodeDuration> codes;
 
 };
 

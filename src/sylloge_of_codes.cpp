@@ -9,6 +9,7 @@ void sylloge_of_codes::setup(){
     ofHideCursor();
 	//ofSetColor(255, 255, 255, 255);
     alpha = 0;
+    loopCounter = 0;
 
     CodeDuration code;
     code.code = "Hello World";
@@ -21,41 +22,17 @@ void sylloge_of_codes::setup(){
     code.duration = 5.0;
     codes.push_back(code);
 
+    // TODO
+    // Set real tzd
+    tzd = 5;
+
     std::string s("Sat, 1 Jan 2005 12:00:00 GMT");
-    int tzd;
     DateTime dt;
     DateTimeParser::parse(DateTimeFormat::RFC1123_FORMAT, s, dt, tzd);
     Poco::Timestamp ts = dt.timestamp();
     Poco::LocalDateTime ldt(tzd, dt);
 
-   // make DB QUERY
-    sqlite = new ofxSQLite("/Users/nknouf/src/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite"); 
-
-    setSyllogeCount();
-    cout << "total number of entires: " << syllogeCount << endl;
-    int index = rand() % syllogeCount;
-
-    ofxSQLiteSelect sel = sqlite->select("id, code, comments, pseudonym, code_date, enabled").from("sylloge").where("id", index);
-    sel.execute().begin();
-
-    while (sel.hasNext()) {
-        currentCode.id = sel.getInt();
-        currentCode.code = sel.getString();
-        currentCode.comments = sel.getString();
-        currentCode.pseudonym = sel.getString();
-        //currentCode.code_date = sel.getString();
-        bool ok = DateTimeParser::tryParse(sel.getString(), currentCode.code_dt, tzd);
-        currentCode.enabled = (bool) sel.getInt();
-        sel.next();
-    }
-
-    // Annoying, but this is how it works...
-    std::ostringstream stringStream;
-    stringStream << DateTimeFormatter::format(currentCode.code_dt.timestamp(), "%W, %e %B %Y") << "\n" << currentCode.pseudonym << "\n" << currentCode.code;
-    completeText = stringStream.str();
-    
-    // 23 lines visible right now...
-
+    // SETUP INTRO TEXT
 	ofBackground(255,255,255);
 
     ofxTextBlock intro;
@@ -67,13 +44,11 @@ void sylloge_of_codes::setup(){
     segment.startTime = 0.0;
     segment.delta = 0.0;
     segment.duration = 10.0;
-    segment.fadeDuration = 0.1;
     segment.fade = true;
     segment.textBlock = intro;
     segment.xPos = centerX(intro);
     segment.yPos = centerY(intro);
     addToSequence(segment, sequence);
-
 
     intro.init("AJensonPro-Regular.otf", 30);
     intro.setText(gettext("Consider this an invitation. An invitation to develop new codes for communication. In the wake of the revelations that the United States' National Security Agency (NSA) and the United Kingdom's General Communications Headquarters (GCHQ) monitor large swaths of our online communications, we cannot explicitly trust that what we think is safe from eavesdropping actually is."));
@@ -87,6 +62,30 @@ void sylloge_of_codes::setup(){
     segment.xPos = 0.25 * ofGetWidth();
     segment.yPos = 10;
     addToSequence(segment, sequence);
+
+
+    // GET FIRST SELECTION FROM DATABASE
+    sqlite = new ofxSQLite("/Users/nknouf/src/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite"); 
+    selectRandomCode(currentCode);
+
+    // Annoying for string processing, but this is how it works...
+    std::ostringstream stringStream;
+    stringStream << DateTimeFormatter::format(currentCode.code_dt.timestamp(), "%W, %e %B %Y") << "\n" << currentCode.pseudonym << "\n" << currentCode.code;
+    completeText = stringStream.str();
+    intro.setText(completeText);
+    intro.wrapTextX(0.7 * ofGetWidth());
+    intro.setColor(255, 255, 255, 255);
+    segment.startTime = 0.0;
+    segment.delta = 3.0;
+    segment.duration = 25.0;
+    segment.fade = true;
+    segment.textBlock = intro;
+    segment.xPos = 0.25 * ofGetWidth();
+    segment.yPos = 10;
+    addToSequence(segment, sequence);
+   
+    // 23 lines visible right now...
+
 
 	testFont.loadFont("AJensonPro-Regular.otf", 160, true, true, true);
 	testFont2.loadFont("SourceSansPro-Regular.otf", 52, true, true, true);
@@ -121,20 +120,40 @@ void sylloge_of_codes::setup(){
 }
 
 void sylloge_of_codes::addToSequence(Segment& segment, vector<Segment>& sequence) {
-    ofLog(OF_LOG_NOTICE, "sequence length: %d", sequence.size());
-    
     Segment previousSegment;
     if (sequence.size() != 0) {
         previousSegment = sequence.at(sequence.size() - 1);
         segment.startTime = previousSegment.startTime + previousSegment.duration + segment.delta;
     }
 
-    if (segment.fadeDuration != 0) {
+    if (segment.fade) {
         segment.currentAlpha = 0.0;
     } else {
         segment.currentAlpha = 255.0;
     }
+
+    segment.textBlock.setColor(255, 255, 255, segment.currentAlpha);
     sequence.push_back(segment);
+}
+
+void sylloge_of_codes::selectRandomCode(Sylloge& code) {
+    setSyllogeCount();
+    int index = rand() % syllogeCount;
+
+    ofxSQLiteSelect sel = sqlite->select("id, code, comments, pseudonym, code_date, enabled").from("sylloge").where("id", index);
+    sel.execute().begin();
+
+    while (sel.hasNext()) {
+        code.id = sel.getInt();
+        code.code = sel.getString();
+        code.comments = sel.getString();
+        code.pseudonym = sel.getString();
+        //code.code_date = sel.getString();
+        DateTimeParser::tryParse(sel.getString(), code.code_dt, tzd);
+        code.enabled = (bool) sel.getInt();
+        sel.next();
+    }
+
 }
 
 float sylloge_of_codes::centerX(ofxTextBlock textBlock) {
@@ -162,9 +181,44 @@ void sylloge_of_codes::update(){
 
 }
 
-void sylloge_of_codes::segmentFadeIn(Segment& segment) {
-    segment.currentAlpha = ofLerp(segment.currentAlpha, 255, 0.02);
-    segment.textBlock.setColor(255, 255, 255, segment.currentAlpha);
+void sylloge_of_codes::segmentFadeIn(vector<Segment>& sequence, int index) {
+    sequence.at(index).textBlock.setColor(255, 255, 255, sequence.at(index).currentAlpha);
+    sequence.at(index).currentAlpha = ofLerp(sequence.at(index).currentAlpha, 255, 0.08);
+}
+
+void sylloge_of_codes::resetSequence(vector<Segment>& sequence) {
+    // Reset the randomly chosen code
+    // TODO
+    // Make the match the number of opening segments (which is right now only two)
+    sequence.erase(sequence.begin() + 2, sequence.begin() + sequence.size());
+    selectRandomCode(currentCode);
+
+    Segment newSegment;
+    ofxTextBlock textBlock;
+    textBlock.init("AJensonPro-Regular.otf", 30);
+    // Annoying for string processing, but this is how it works...
+    std::ostringstream stringStream;
+    stringStream << DateTimeFormatter::format(currentCode.code_dt.timestamp(), "%W, %e %B %Y") << "\n" << currentCode.pseudonym << "\n" << currentCode.code;
+    completeText = stringStream.str();
+    textBlock.setText(completeText);
+    textBlock.wrapTextX(0.7 * ofGetWidth());
+    textBlock.setColor(255, 255, 255, 255);
+    newSegment.startTime = 0.0;
+    newSegment.delta = 3.0;
+    newSegment.duration = 25.0;
+    newSegment.fade = true;
+    newSegment.textBlock = textBlock;
+    newSegment.xPos = 0.25 * ofGetWidth();
+    newSegment.yPos = 10;
+    addToSequence(newSegment, sequence);
+
+    // Reset the fades
+    for (int index = 0; index < sequence.size(); ++index) {
+        if (sequence.at(index).fade) {
+            sequence.at(index).currentAlpha = 0;
+            sequence.at(index).textBlock.setColor(255, 255, 255, sequence.at(index).currentAlpha);
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -175,6 +229,10 @@ void sylloge_of_codes::draw(){
     if (SYLLOGE_DEBUG) {
         elapsedTimeString = "Elapsed time: " + ofToString(ofGetElapsedTimef());
         ofDrawBitmapString(elapsedTimeString, 10, 10);
+        fpsString = "frame rate: "+ ofToString(ofGetFrameRate(), 2);
+        ofDrawBitmapString(fpsString, 10, 30);
+        loopCounterString = "Loop count: "+ ofToString(loopCounter);
+        ofDrawBitmapString(loopCounterString, 10, 50);
     }
 
     Segment segment;
@@ -184,12 +242,14 @@ void sylloge_of_codes::draw(){
             if (ofGetElapsedTimef() > (segment.startTime + segment.duration)) {
                 continue;
             } else {
+                ofPushStyle();
                 // TODO
-                // Fix fading in and out
-                //if (segment.fade) {
-                //    segmentFadeIn(segment);
-                //}
+                // Enable fading over a duration; enable fade-out
+                if (segment.fade) {
+                    segmentFadeIn(sequence, index);
+                }
                 segment.textBlock.draw(segment.xPos, segment.yPos);
+                ofPopStyle();
             }
         }
     }
@@ -198,6 +258,8 @@ void sylloge_of_codes::draw(){
     segment = sequence.at(sequence.size() - 1);
     if (ofGetElapsedTimef() > (segment.startTime + segment.duration + segment.delta)) {
         ofResetElapsedTimeCounter();
+        resetSequence(sequence);
+        loopCounter += 1;
     }
 
 //    // To fade in and out: need to figure out way to draw text with an alpha

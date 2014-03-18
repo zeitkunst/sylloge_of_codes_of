@@ -94,6 +94,11 @@ class sylloge_of_codes : public ofBaseApp{
         // Text offset in pixels
         static const int offset = 15;
 
+        unsigned int loopCounter;
+
+        // Time zone differential
+        int tzd;
+
         ofxSQLite* sqlite;
 
         // Current number of entries in the database
@@ -105,9 +110,13 @@ class sylloge_of_codes : public ofBaseApp{
         float centerX(ofxTextBlock textBlock);
         float centerY(ofxTextBlock textBlock);
         void addToSequence(Segment& segment, vector<Segment>& sequence);
-        void segmentFadeIn(Segment& segment);
+        void segmentFadeIn(vector<Segment>& sequence, int index);
+        void resetSequence(vector<Segment>& sequence);
+        void selectRandomCode(Sylloge& currentCode);
     private:
         string elapsedTimeString;
+        string fpsString;
+        string loopCounterString;
         vector<CodeDuration> codes;
         vector<Segment> sequence;
 

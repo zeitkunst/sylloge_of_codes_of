@@ -4,36 +4,39 @@
 void sylloge_of_codes::setup(){
     completeText = "Aenean laoreet feugiat turpis eget ultrices. Curabitur viverra aliquam neque, quis interdum augue tempor bibendum. Integer tempus non sapien ut fringilla. Suspendisse potenti. Nullam ultricies pharetra accumsan. Donec aliquam ligula orci, quis aliquam urna bibendum eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed in quam sed risus sodales sollicitudin. Vivamus scelerisque lacinia eros, et vulputate magna laoreet sed. Praesent ultricies elit eu accumsan ornare. Aliquam consequat viverra magna, vitae egestas lorem dictum ut.\n Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam egestas justo felis, et condimentum diam malesuada sit amet. Donec luctus imperdiet dignissim. Sed auctor, leo ac gravida placerat, odio nibh vestibulum nisl, ut dictum tortor dui ut nulla. Curabitur scelerisque quam erat, sed faucibus mi suscipit eu. Vestibulum tortor lacus, varius et orci a, cursus tempor risus. \n Curabitur nisl tortor, elementum sagittis felis eu, pharetra accumsan purus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc molestie nec turpis ut euismod. Cras dignissim laoreet ipsum, ut facilisis nisl. Nulla rhoncus bibendum arcu fringilla tristique. Nullam mattis fringilla odio, tincidunt ullamcorper tellus elementum nec. Pellentesque sed lacinia ipsum. Integer at magna quis ante luctus convallis. Proin non urna in nunc dictum vestibulum. Nunc adipiscing mauris ante, a commodo leo dictum et. Pellentesque aliquam magna diam, quis volutpat ante egestas id. Fusce id scelerisque purus.";
 
+	ofBackground(255,255,255);
     ofSetFrameRate(30);
     ofEnableAlphaBlending();
     ofHideCursor();
-	//ofSetColor(255, 255, 255, 255);
-    alpha = 0;
+	//ofSetFullscreen(true);
     loopCounter = 0;
+    syllogeDebug = SYLLOGE_DEBUG;
 
-    CodeDuration code;
-    code.code = "Hello World";
-    code.duration = 5.0;
-    codes.push_back(code);
-    code.code = "This is a test";
-    code.duration = 5.0;
-    codes.push_back(code);
-    code.code = completeText;
-    code.duration = 5.0;
-    codes.push_back(code);
+    // Quick estimate of the number of words we can display onscreen at a time
+    // String tokenizer in C++: http://stackoverflow.com/questions/10051679/c-tokenize-string
+    // * Determine how many lines over we are, in terms of the desired height of our text block
+    // * Divide the text into a smaller amount by a proportion related to how many lines over we are (e.g., if we are 34 lines total, and we want 23 lines on screen, we need to reduce it by that factor)
+    // * Within the tokenized list of words, figure out how many words this is, and start keeping track of offsets within the list, so that we can easily move from one fragment of the text to another
+    // * This probably needs to be done as a method within the ofxTextSuite class so that we can have access to these internal members
+
+    // Output screen infos
+    ofLog(OF_LOG_NOTICE, "window width: %d", ofGetWindowWidth());
+    ofLog(OF_LOG_NOTICE, "window height: %d", ofGetWindowHeight());
+    //ofLog(OF_LOG_NOTICE, "x-width: %f", myText.defaultFont.stringWidth("x"));
+    //ofLog(OF_LOG_NOTICE, "y-height: %f", myText.defaultFont.stringHeight("l"));
+    //ofLog(OF_LOG_NOTICE, "line-height: %f", myText.defaultFont.getLineHeight());
 
     // TODO
     // Set real tzd
     tzd = 5;
 
-    std::string s("Sat, 1 Jan 2005 12:00:00 GMT");
-    DateTime dt;
-    DateTimeParser::parse(DateTimeFormat::RFC1123_FORMAT, s, dt, tzd);
-    Poco::Timestamp ts = dt.timestamp();
-    Poco::LocalDateTime ldt(tzd, dt);
+    //std::string s("Sat, 1 Jan 2005 12:00:00 GMT");
+    //DateTime dt;
+    //DateTimeParser::parse(DateTimeFormat::RFC1123_FORMAT, s, dt, tzd);
+    //Poco::Timestamp ts = dt.timestamp();
+    //Poco::LocalDateTime ldt(tzd, dt);
 
     // SETUP INTRO TEXT
-	ofBackground(255,255,255);
 
     ofxTextBlock intro;
     intro.init("SourceSansPro-Black.otf", 60);
@@ -50,6 +53,10 @@ void sylloge_of_codes::setup(){
     segment.yPos = centerY(intro);
     addToSequence(segment, sequence);
 
+    // please connect to the "sylloge_of_codes" wifi network
+    // further instructions will await you there
+    // or, you can continue to watch what you see here
+
     intro.init("AJensonPro-Regular.otf", 30);
     intro.setText(gettext("Consider this an invitation. An invitation to develop new codes for communication. In the wake of the revelations that the United States' National Security Agency (NSA) and the United Kingdom's General Communications Headquarters (GCHQ) monitor large swaths of our online communications, we cannot explicitly trust that what we think is safe from eavesdropping actually is."));
     intro.wrapTextX(0.7 * ofGetWidth());
@@ -63,15 +70,18 @@ void sylloge_of_codes::setup(){
     segment.yPos = 10;
     addToSequence(segment, sequence);
 
-
-    // GET FIRST SELECTION FROM DATABASE
+    // Set database location
     sqlite = new ofxSQLite("/Users/nknouf/src/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite"); 
+
+    // Get first random selection from database
     selectRandomCode(currentCode);
 
     // Annoying for string processing, but this is how it works...
     std::ostringstream stringStream;
     stringStream << DateTimeFormatter::format(currentCode.code_dt.timestamp(), "%W, %e %B %Y") << "\n" << currentCode.pseudonym << "\n" << currentCode.code;
     completeText = stringStream.str();
+
+    // Setup random selection segment
     intro.setText(completeText);
     intro.wrapTextX(0.7 * ofGetWidth());
     intro.setColor(255, 255, 255, 255);
@@ -85,25 +95,7 @@ void sylloge_of_codes::setup(){
     addToSequence(segment, sequence);
    
     // 23 lines visible right now...
-
-
-	testFont.loadFont("AJensonPro-Regular.otf", 160, true, true, true);
-	testFont2.loadFont("SourceSansPro-Regular.otf", 52, true, true, true);
-
     myText.init("AJensonPro-Regular.otf", 30);
-
-    // Quick estimate of the number of words we can display onscreen at a time
-    // String tokenizer in C++: http://stackoverflow.com/questions/10051679/c-tokenize-string
-    // * Determine how many lines over we are, in terms of the desired height of our text block
-    // * Divide the text into a smaller amount by a proportion related to how many lines over we are (e.g., if we are 34 lines total, and we want 23 lines on screen, we need to reduce it by that factor)
-    // * Within the tokenized list of words, figure out how many words this is, and start keeping track of offsets within the list, so that we can easily move from one fragment of the text to another
-    // * This probably needs to be done as a method within the ofxTextSuite class so that we can have access to these internal members
-    ofLog(OF_LOG_NOTICE, "window width: %d", ofGetWindowWidth());
-    ofLog(OF_LOG_NOTICE, "window height: %d", ofGetWindowHeight());
-    ofLog(OF_LOG_NOTICE, "x-width: %f", myText.defaultFont.stringWidth("x"));
-    ofLog(OF_LOG_NOTICE, "y-height: %f", myText.defaultFont.stringHeight("l"));
-    ofLog(OF_LOG_NOTICE, "line-height: %f", myText.defaultFont.getLineHeight());
-
     myText.setText(completeText);
     int numLines = myText.wrapTextX(ofGetWidth()/2 - offset);
     if (numLines > ((float) ofGetWindowHeight() / (float) myText.defaultFont.getLineHeight())) {
@@ -114,9 +106,6 @@ void sylloge_of_codes::setup(){
     i18nText.init("SourceSansPro-Regular.otf", 30);
     i18nText.setText(gettext("This is a test that ought to be translated into another language."));
     i18nText.wrapTextX(ofGetWidth()/2 - 10);
-	letter = '$';
-	testChar = testFont.getCharacterAsPoints(letter);
-	//ofSetFullscreen(true);
 }
 
 void sylloge_of_codes::addToSequence(Segment& segment, vector<Segment>& sequence) {
@@ -226,7 +215,7 @@ void sylloge_of_codes::draw(){
 	ofBackground(0, 0, 0);
 	ofFill();
 
-    if (SYLLOGE_DEBUG) {
+    if (syllogeDebug) {
         elapsedTimeString = "Elapsed time: " + ofToString(ofGetElapsedTimef());
         ofDrawBitmapString(elapsedTimeString, 10, 10);
         fpsString = "frame rate: "+ ofToString(ofGetFrameRate(), 2);
@@ -261,21 +250,17 @@ void sylloge_of_codes::draw(){
         resetSequence(sequence);
         loopCounter += 1;
     }
-
-//    // To fade in and out: need to figure out way to draw text with an alpha
-//    // Can also use this to calculate incremental changes: ofLerp()
-//    alpha = ofLerp(alpha, 255, 0.02);
-//	myText.setColor(255, 255, 255, alpha);
-//	i18nText.setColor(255, 255, 255, alpha);
-//
-//    // Here's the sequence:
-//    myText.draw(ofGetWidth()/2, 15);
-//    i18nText.draw(5, 15);
-
 }
 
 //--------------------------------------------------------------
 void sylloge_of_codes::keyPressed (int key){
+    if ((key == 'f') || (key == 'F')) {
+        // TODO
+        // Make this update window boxes, layout, etc.
+	    ofToggleFullscreen();
+    } else if ((key == 'd') || (key == 'D')) {
+       syllogeDebug = !syllogeDebug;
+    }
 }
 
 //--------------------------------------------------------------

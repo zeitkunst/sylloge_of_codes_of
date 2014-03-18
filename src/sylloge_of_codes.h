@@ -48,11 +48,6 @@ struct Segment {
     int yPos;
 };
 
-struct CodeDuration {
-    string code;
-    float duration;
-};
-
 class sylloge_of_codes : public ofBaseApp{
 
 	public:
@@ -96,6 +91,8 @@ class sylloge_of_codes : public ofBaseApp{
 
         unsigned int loopCounter;
 
+        bool syllogeDebug;
+
         // Time zone differential
         int tzd;
 
@@ -117,7 +114,6 @@ class sylloge_of_codes : public ofBaseApp{
         string elapsedTimeString;
         string fpsString;
         string loopCounterString;
-        vector<CodeDuration> codes;
         vector<Segment> sequence;
 
 };

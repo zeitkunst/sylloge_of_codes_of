@@ -47,7 +47,7 @@ void sylloge_of_codes::setup(){
     segment.startTime = 0.0;
     segment.delta = 0.0;
     segment.duration = 10.0;
-    segment.fade = true;
+    segment.fade = false;
     segment.textBlock = intro;
     segment.xPos = centerX(intro);
     segment.yPos = centerY(intro);
@@ -64,7 +64,7 @@ void sylloge_of_codes::setup(){
     segment.startTime = 0.0;
     segment.delta = 3.0;
     segment.duration = 15.0;
-    segment.fade = true;
+    segment.fade = false;
     segment.textBlock = intro;
     segment.xPos = 0.25 * ofGetWidth();
     segment.yPos = 10;
@@ -94,7 +94,7 @@ void sylloge_of_codes::setup(){
     segment.startTime = 0.0;
     segment.delta = 3.0;
     segment.duration = 25.0;
-    segment.fade = true;
+    segment.fade = false;
     segment.textBlock = intro;
     segment.xPos = 0.25 * ofGetWidth();
     segment.yPos = 10;
@@ -231,20 +231,19 @@ void sylloge_of_codes::draw(){
     }
 
     Segment segment;
+    
     for (int index = 0; index < sequence.size(); ++index) {
-        segment = sequence.at(index);
-        if (segment.startTime < ofGetElapsedTimef()) {
-            if (ofGetElapsedTimef() > (segment.startTime + segment.duration)) {
+        //segment = sequence.at(index);
+        if (sequence.at(index).startTime < ofGetElapsedTimef()) {
+            if (ofGetElapsedTimef() > (sequence.at(index).startTime + sequence.at(index).duration)) {
                 continue;
             } else {
-                ofPushStyle();
                 // TODO
                 // Enable fading over a duration; enable fade-out
-                if (segment.fade) {
+                if (sequence.at(index).fade) {
                     segmentFadeIn(sequence, index);
                 }
-                segment.textBlock.draw(segment.xPos, segment.yPos);
-                ofPopStyle();
+                sequence.at(index).textBlock.draw(sequence.at(index).xPos, sequence.at(index).yPos);
             }
         }
     }

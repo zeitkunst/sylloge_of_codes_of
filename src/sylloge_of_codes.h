@@ -71,7 +71,6 @@ class sylloge_of_codes : public ofBaseApp{
 
         void setCompleteText(char* text);
 		
-        static int basicCallback(void *data, int argc, char **argv, char **azColName);
 		ofTrueTypeFont testFont;
 		ofTrueTypeFont testFont2;
 		ofTTFCharacter testChar;

@@ -78,7 +78,7 @@
 # incorporated directly into the final executable application binary.
 # TODO: should this be a default setting?
 #PROJECT_LDFLAGS=-Wl,-rpath=./libs,-llibintl
-PROJECT_LDFLAGS=-L/opt/local/lib -lintl -framework OpenAL  ../../../addons/obj/osx/Release/ofxTimeline/src/ofxHotKeys_impl_mac.o ../../../addons/obj/osx/Release/ofxTimeline/src/ofxRemoveCocoaMenu.o
+PROJECT_LDFLAGS=-L/opt/local/lib -lintl -framework OpenAL  ../../../addons/obj/osx/Release/ofxTimeline/src/ofxHotKeys_impl_mac.o ../../../addons/obj/osx/Release/ofxTimeline/src/ofxRemoveCocoaMenu.o 
 
 ################################################################################
 # PROJECT DEFINES
@@ -106,7 +106,7 @@ PROJECT_LDFLAGS=-L/opt/local/lib -lintl -framework OpenAL  ../../../addons/obj/o
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-PROJECT_CFLAGS = -I/opt/local/include -arch i386
+PROJECT_CFLAGS = -I/opt/local/include -I/opt/local/include/pango-1.0 -I/opt/local/include/glib-2.0 -I/opt/local/lib/glib-2.0/include -arch i386
 
 ################################################################################
 # PROJECT OPTIMIZATION CFLAGS

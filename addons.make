@@ -1,2 +1,3 @@
 ofxSQLite
 ofxTextSuite
+ofxXmlSettings

@@ -70,8 +70,14 @@ void sylloge_of_codes::setup(){
     segment.yPos = 10;
     addToSequence(segment, sequence);
 
-    // Set database location
-    sqlite = new ofxSQLite("/Users/nknouf/src/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite"); 
+    settings.loadFile(settingsFilename);
+    string databaseLocation = settings.getValue("settings:databaseLocation", "/Users/nknouf/src/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite");
+
+    sqlite = new ofxSQLite(databaseLocation); 
+
+    // Ensure that the settings are saved
+    settings.setValue("settings:databaseLocation", databaseLocation);
+    settings.saveFile(settingsFilename);
 
     // Get first random selection from database
     selectRandomCode(currentCode);

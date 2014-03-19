@@ -14,6 +14,7 @@
 #include "ofMain.h"
 #include "ofxTextSuite.h"
 #include "ofxSQLiteHeaders.h"
+#include "ofxXmlSettings.h"
 
 #define SYLLOGE_DEBUG 1
 
@@ -96,6 +97,7 @@ class sylloge_of_codes : public ofBaseApp{
         // Time zone differential
         int tzd;
 
+
         ofxSQLite* sqlite;
 
         // Current number of entries in the database
@@ -111,6 +113,10 @@ class sylloge_of_codes : public ofBaseApp{
         void resetSequence(vector<Segment>& sequence);
         void selectRandomCode(Sylloge& currentCode);
     private:
+        // Settings
+        ofxXmlSettings settings;
+        const string settingsFilename = "sylloge_of_codes_of_settings.xml";
+
         string elapsedTimeString;
         string fpsString;
         string loopCounterString;

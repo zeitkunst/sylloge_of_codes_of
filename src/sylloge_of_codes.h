@@ -46,6 +46,7 @@ struct Segment {
     bool fade;
     float currentAlpha;
     ofxTextBlock textBlock;    
+    ofColor backgroundColor;
     int xPos;
     int yPos;
 };
@@ -106,6 +107,7 @@ class sylloge_of_codes : public ofBaseApp{
 
         // Current sylloge item
         Sylloge currentCode;
+        int currentSequenceIndex;
         float alpha;
         float centerX(ofxTextBlock textBlock);
         float centerY(ofxTextBlock textBlock);
@@ -113,15 +115,16 @@ class sylloge_of_codes : public ofBaseApp{
         void segmentFadeIn(vector<Segment>& sequence, int index);
         void resetSequence(vector<Segment>& sequence);
         void selectRandomCode(Sylloge& currentCode);
+        void loadTextLines(vector<Segment>& sequence);
 
         // Sounds
         ofSoundPlayer reader;
     private:
         // Settings
         ofxXmlSettings settings;
-        ofxXmlSettings lines;
+        ofxXmlSettings textLines;
         const string settingsFilename = "sylloge_of_codes_of_settings.xml";
-        const string linesFilename = "lines.xml";
+        const string textLinesFilename = "textLines.xml";
 
         string elapsedTimeString;
         string fpsString;

@@ -59,11 +59,11 @@
         </text>
         <duration>2.00</duration>
         <delta>0.25</delta>
-        <fRed>255</fRed>
-        <fGreen>0</fGreen>
+        <fRed>0</fRed>
+        <fGreen>255</fGreen>
         <fBlue>0</fBlue>
-        <bRed>255</bRed>
-        <bGreen>255</bGreen>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
         <bBlue>255</bBlue>
         <font>SourceSansPro-Black.otf</font>
 
@@ -77,7 +77,7 @@
         <fRed>255</fRed>
         <fGreen>0</fGreen>
         <fBlue>0</fBlue>
-        <bRed>255</bRed>
+        <bRed>0</bRed>
         <bGreen>255</bGreen>
         <bBlue>255</bBlue>
         <font>SourceSansPro-Black.otf</font>
@@ -97,6 +97,9 @@
         <text>
             through undersea cables
         </text>
+        <fRed>0</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>255</fBlue>
     </line>
     <line>
         <text>

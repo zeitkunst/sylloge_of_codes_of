@@ -78,7 +78,8 @@
 # incorporated directly into the final executable application binary.
 # TODO: should this be a default setting?
 #PROJECT_LDFLAGS=-Wl,-rpath=./libs,-llibintl
-PROJECT_LDFLAGS=-L/opt/local/lib -lintl -framework OpenAL  ../../../addons/obj/osx/Release/ofxTimeline/src/ofxHotKeys_impl_mac.o ../../../addons/obj/osx/Release/ofxTimeline/src/ofxRemoveCocoaMenu.o 
+PROJECT_LDFLAGS=-L/opt/local/lib -lintl -framework OpenAL 
+#../../../addons/obj/osx/Release/ofxTimeline/src/ofxHotKeys_impl_mac.o ../../../addons/obj/osx/Release/ofxTimeline/src/ofxRemoveCocoaMenu.o 
 
 ################################################################################
 # PROJECT DEFINES

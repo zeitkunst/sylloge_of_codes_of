@@ -17,6 +17,7 @@
 #include "ofxXmlSettings.h"
 
 #define SYLLOGE_DEBUG 1
+#define SYLLOGE_SOUNDS 1
 
 using Poco::Timestamp;
 using Poco::DateTime;
@@ -92,11 +93,12 @@ class sylloge_of_codes : public ofBaseApp{
         unsigned int loopCounter;
 
         bool syllogeDebug;
+        bool syllogeSounds;
 
         // Time zone differential
         int tzd;
 
-
+        // CSV
         ofxSQLite* sqlite;
 
         // Current number of entries in the database
@@ -111,15 +113,22 @@ class sylloge_of_codes : public ofBaseApp{
         void segmentFadeIn(vector<Segment>& sequence, int index);
         void resetSequence(vector<Segment>& sequence);
         void selectRandomCode(Sylloge& currentCode);
+
+        // Sounds
+        ofSoundPlayer reader;
     private:
         // Settings
         ofxXmlSettings settings;
+        ofxXmlSettings lines;
         const string settingsFilename = "sylloge_of_codes_of_settings.xml";
+        const string linesFilename = "lines.xml";
 
         string elapsedTimeString;
         string fpsString;
         string loopCounterString;
+        string playSoundsString;
         vector<Segment> sequence;
+        vector<string> textFragments;
 
 };
 

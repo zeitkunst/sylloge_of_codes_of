@@ -93,20 +93,21 @@ void sylloge_of_codes::setup(){
     // further instructions will await you there
     // or, you can continue to watch what you see here
 
-    intro.init("SourceSansPro-Regular.otf", 30);
-    intro.setText(gettext("To the person or people within this room:\n\nThis is a time when electronic communications are surveilled the world over. Little seems to escape the computer programs and human analysts that pour over our electronic data as it traverses national boundaries through undersea cables or the wireless ether. Sent in the clear, our data is understandable by anyone with a bit of technical knowledge. So we're asked to encrypt it, to obfuscate it in some way. But these same programs and analysts have made some of these same encryption techniques weak, opening backdoors into seemingly secure communications. What we're left feeling is helplessness, a distinct lack of power to respond, and a dangerous level of cynicism."));
-    //intro.setText(gettext("Consider this an invitation. An invitation to develop new codes for communication. In the wake of the revelations that the United States' National Security Agency (NSA) and the United Kingdom's General Communications Headquarters (GCHQ) monitor large swaths of our online communications, we cannot explicitly trust that what we think is safe from eavesdropping actually is."));
-    intro.wrapTextX(0.7 * ofGetWidth());
-    intro.setColor(255, 0, 0, 255);
-    segment.startTime = 0.0;
-    segment.delta = 3.0;
-    segment.duration = 15.0;
-    segment.fade = false;
-    segment.textBlock = intro;
-    segment.xPos = 0.25 * ofGetWidth();
-    segment.yPos = 10;
-    segment.backgroundColor = ofColor::white;
-    addToSequence(segment, sequence);
+    // Skipping this for now
+//    intro.init("SourceSansPro-Regular.otf", 30);
+//    intro.setText(gettext("To the person or people within this room:\n\nThis is a time when electronic communications are surveilled the world over. Little seems to escape the computer programs and human analysts that pour over our electronic data as it traverses national boundaries through undersea cables or the wireless ether. Sent in the clear, our data is understandable by anyone with a bit of technical knowledge. So we're asked to encrypt it, to obfuscate it in some way. But these same programs and analysts have made some of these same encryption techniques weak, opening backdoors into seemingly secure communications. What we're left feeling is helplessness, a distinct lack of power to respond, and a dangerous level of cynicism."));
+//    //intro.setText(gettext("Consider this an invitation. An invitation to develop new codes for communication. In the wake of the revelations that the United States' National Security Agency (NSA) and the United Kingdom's General Communications Headquarters (GCHQ) monitor large swaths of our online communications, we cannot explicitly trust that what we think is safe from eavesdropping actually is."));
+//    intro.wrapTextX(0.7 * ofGetWidth());
+//    intro.setColor(255, 0, 0, 255);
+//    segment.startTime = 0.0;
+//    segment.delta = 3.0;
+//    segment.duration = 15.0;
+//    segment.fade = false;
+//    segment.textBlock = intro;
+//    segment.xPos = 0.25 * ofGetWidth();
+//    segment.yPos = 10;
+//    segment.backgroundColor = ofColor::white;
+//    addToSequence(segment, sequence);
 
     settings.loadFile(settingsFilename);
     string databaseLocation = settings.getValue("settings:databaseLocation", "/Users/nknouf/Dropbox/projects/sylloge_of_codes/web/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite");
@@ -259,7 +260,6 @@ void sylloge_of_codes::loadTextLines(vector<Segment>& sequence) {
         bColor.r = textLines.getValue("bRed", 255);
         bColor.g = textLines.getValue("bGreen", 255);
         bColor.b = textLines.getValue("bBlue", 255);
-        ofLog(OF_LOG_NOTICE, "Background Color: " + ofToString(bColor));
         segment.backgroundColor = bColor;
         addToSequence(segment, sequence);
         textLines.popTag();
@@ -271,8 +271,8 @@ void sylloge_of_codes::resetSequence(vector<Segment>& sequence) {
     // Reset the randomly chosen code
     // TODO
     // Make the match the number of opening segments (which is right now only one)
-    sequence.erase(sequence.begin() + 1, sequence.begin() + sequence.size());
-    loadTextLines(sequence);
+    sequence.erase(sequence.begin() + sequence.size() - 1, sequence.begin() + sequence.size());
+    //loadTextLines(sequence);
     selectRandomCode(currentCode);
 
     Segment newSegment;
@@ -344,6 +344,7 @@ void sylloge_of_codes::draw(){
     // Check if we need to loop back to the beginning
     segment = sequence.at(sequence.size() - 1);
     if (ofGetElapsedTimef() > (segment.startTime + segment.duration + segment.delta)) {
+        currentSequenceIndex = -1;
         ofResetElapsedTimeCounter();
         resetSequence(sequence);
         loopCounter += 1;

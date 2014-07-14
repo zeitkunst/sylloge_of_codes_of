@@ -2,6 +2,8 @@
 
 //--------------------------------------------------------------
 void sylloge_of_codes::setup(){
+    const string settingsFilename = "sylloge_of_codes_settings.xml";
+    const string textLinesFilename = "textLines.xml";
     completeText = "Aenean laoreet feugiat turpis eget ultrices. Curabitur viverra aliquam neque, quis interdum augue tempor bibendum. Integer tempus non sapien ut fringilla. Suspendisse potenti. Nullam ultricies pharetra accumsan. Donec aliquam ligula orci, quis aliquam urna bibendum eu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed in quam sed risus sodales sollicitudin. Vivamus scelerisque lacinia eros, et vulputate magna laoreet sed. Praesent ultricies elit eu accumsan ornare. Aliquam consequat viverra magna, vitae egestas lorem dictum ut.\n Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam egestas justo felis, et condimentum diam malesuada sit amet. Donec luctus imperdiet dignissim. Sed auctor, leo ac gravida placerat, odio nibh vestibulum nisl, ut dictum tortor dui ut nulla. Curabitur scelerisque quam erat, sed faucibus mi suscipit eu. Vestibulum tortor lacus, varius et orci a, cursus tempor risus. \n Curabitur nisl tortor, elementum sagittis felis eu, pharetra accumsan purus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc molestie nec turpis ut euismod. Cras dignissim laoreet ipsum, ut facilisis nisl. Nulla rhoncus bibendum arcu fringilla tristique. Nullam mattis fringilla odio, tincidunt ullamcorper tellus elementum nec. Pellentesque sed lacinia ipsum. Integer at magna quis ante luctus convallis. Proin non urna in nunc dictum vestibulum. Nunc adipiscing mauris ante, a commodo leo dictum et. Pellentesque aliquam magna diam, quis volutpat ante egestas id. Fusce id scelerisque purus.";
 
     // Load a CSV File.
@@ -67,6 +69,7 @@ void sylloge_of_codes::setup(){
 
     textLines.loadFile(textLinesFilename);
 
+    ofLog(OF_LOG_NOTICE, "Loading text...");
     loadTextLines(sequence);
 //    // Go through each element in the csv file
 //    for (int i = 1; i <= csv.numRows; i++) {
@@ -153,6 +156,9 @@ void sylloge_of_codes::setup(){
     i18nText.init("SourceSansPro-Regular.otf", 30);
     i18nText.setText(gettext("This is a test that ought to be translated into another language."));
     i18nText.wrapTextX(ofGetWidth()/2 - 10);
+    
+    ofLog(OF_LOG_NOTICE, "Starting...");
+    ofResetElapsedTimeCounter();
 }
 
 void sylloge_of_codes::addToSequence(Segment& segment, vector<Segment>& sequence) {
@@ -295,7 +301,7 @@ void sylloge_of_codes::resetSequence(vector<Segment>& sequence) {
     addToSequence(newSegment, sequence);
 
     // Reset the fades
-    for (int index = 0; index < sequence.size(); ++index) {
+    for (unsigned int index = 0; index < sequence.size(); ++index) {
         if (sequence.at(index).fade) {
             sequence.at(index).currentAlpha = 0;
             sequence.at(index).textBlock.setColor(255, 0, 0, sequence.at(index).currentAlpha);
@@ -311,7 +317,7 @@ void sylloge_of_codes::draw(){
 
     Segment segment;
     
-    for (int index = 0; index < sequence.size(); ++index) {
+    for (unsigned int index = 0; index < sequence.size(); ++index) {
         //segment = sequence.at(index);
         if (sequence.at(index).startTime < ofGetElapsedTimef()) {
             if (ofGetElapsedTimef() > (sequence.at(index).startTime + sequence.at(index).duration)) {

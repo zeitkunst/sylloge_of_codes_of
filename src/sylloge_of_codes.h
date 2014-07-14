@@ -123,8 +123,8 @@ class sylloge_of_codes : public ofBaseApp{
         // Settings
         ofxXmlSettings settings;
         ofxXmlSettings textLines;
-        const string settingsFilename = "sylloge_of_codes_of_settings.xml";
-        const string textLinesFilename = "textLines.xml";
+        static const string settingsFilename;
+        static const string textLinesFilename;
 
         string elapsedTimeString;
         string fpsString;

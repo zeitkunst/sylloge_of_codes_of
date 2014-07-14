@@ -1,4 +1,6 @@
 #pragma once
+#include <ctime>
+#include <cmath>
 #include <libintl.h>
 #include <sqlite3.h>
 

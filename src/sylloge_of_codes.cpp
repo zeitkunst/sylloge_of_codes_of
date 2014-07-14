@@ -182,6 +182,7 @@ void sylloge_of_codes::addToSequence(Segment& segment, vector<Segment>& sequence
 
 void sylloge_of_codes::selectRandomCode(Sylloge& code) {
     setSyllogeCount();
+    srand(time(0));
     int index = rand() % syllogeCount;
 
     ofxSQLiteSelect sel = sqlite->select("id, code, comments, pseudonym, code_date, enabled").from("sylloge").where("id", index);

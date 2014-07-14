@@ -82,13 +82,8 @@ class sylloge_of_codes : public ofBaseApp{
         ofxTextBlock myText;
         ofxTextBlock i18nText;
 
-        ofxTextBlock leftTextBlock;
-        ofxTextBlock rightTextBlock;
-
-        // Strings for overall text and left and right text
+        // Strings for overall text
         std::string completeText;
-        std::string leftText;
-        std::string rightText;
 
         // Text offset in pixels
         static const int offset = 15;

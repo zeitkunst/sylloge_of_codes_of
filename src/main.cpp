@@ -7,7 +7,8 @@
 int main( ){
     
     ofSetLogLevel(OF_LOG_NOTICE);
-    bindtextdomain("sylloge_of_codes", "../");
+    setlocale(LC_ALL, "");
+    bindtextdomain("sylloge_of_codes", "/Users/nknouf/development/of_v0.8.3_osx_release/apps/myApps/sylloge_of_codes_of/po");
     textdomain("sylloge_of_codes");
 	ofSetupOpenGL(1280, 800, OF_WINDOW);			// <-------- setup the GL context
 

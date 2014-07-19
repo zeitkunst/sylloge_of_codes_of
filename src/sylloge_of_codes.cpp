@@ -4,6 +4,7 @@
 void sylloge_of_codes::setup(){
     const string settingsFilename = "sylloge_of_codes_settings.xml";
     const string textLinesFilename = "textLines.xml";
+    skipIntro = false;
 
     // Sounds
     reader.loadSound("sounds/Violet.mp3");
@@ -12,7 +13,7 @@ void sylloge_of_codes::setup(){
 
 	ofBackground(255,255,255);
     currentSequenceIndex = -1;
-    ofSetFrameRate(30);
+    ofSetFrameRate(60);
     ofEnableAlphaBlending();
     ofHideCursor();
 	//ofSetFullscreen(true);
@@ -64,8 +65,10 @@ void sylloge_of_codes::setup(){
 
     textLines.loadFile(textLinesFilename);
 
-    ofLog(OF_LOG_NOTICE, "Loading text...");
-    loadTextLines(sequence);
+    if (!skipIntro) {
+        ofLog(OF_LOG_NOTICE, "Loading text...");
+        loadTextLines(sequence);
+    }
 
     settings.loadFile(settingsFilename);
     string databaseLocation = settings.getValue("settings:databaseLocation", "/home/nknouf/sylloge_of_codes.sqlite");

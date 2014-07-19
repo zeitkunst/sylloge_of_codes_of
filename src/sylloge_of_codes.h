@@ -130,6 +130,7 @@ class sylloge_of_codes : public ofBaseApp{
         string playSoundsString;
         vector<Segment> sequence;
         vector<string> textFragments;
+        bool skipIntro;
 
 };
 

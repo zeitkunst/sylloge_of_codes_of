@@ -8,7 +8,7 @@
 int main( ){
     
     setlocale(LC_ALL, "");
-    bindtextdomain("sylloge_of_codes", "/home/nknouf/development/of_v0.8.3_linux64_release/apps/myApps/sylloge_of_codes_of/po");
+    bindtextdomain("sylloge_of_codes", "../po");
     //bindtextdomain("sylloge_of_codes", "/usr/share/locale");
     textdomain("sylloge_of_codes");
     ofSetLogLevel(OF_LOG_NOTICE);

@@ -68,7 +68,7 @@ void sylloge_of_codes::setup(){
     loadTextLines(sequence);
 
     settings.loadFile(settingsFilename);
-    string databaseLocation = settings.getValue("settings:databaseLocation", "/Users/nknouf/Dropbox/projects/sylloge_of_codes/web/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite");
+    string databaseLocation = settings.getValue("settings:databaseLocation", "/home/nknouf/sylloge_of_codes.sqlite");
 
     sqlite = new ofxSQLite(databaseLocation); 
 
@@ -205,7 +205,8 @@ void sylloge_of_codes::loadTextLines(vector<Segment>& sequence) {
     for (int i = 0; i < textLines.getNumTags("line"); i++) {
         textLines.pushTag("line", i);
         text.init(textLines.getValue("font", "SourceSansPro-Black.otf"), 40);
-        text.setText(textLines.getValue("text", ""));
+        const char* line = textLines.getValue("text", "").c_str();
+        text.setText(gettext(line));
         ofLog(OF_LOG_NOTICE, ofToString(textLines.getValue("text", "")));
         text.wrapTextX(ofGetWidth() - (0.2 * ofGetWidth()));
         text.setColor(textLines.getValue("fRed", 255), textLines.getValue("fGreen", 0), textLines.getValue("fBlue", 0), 255);

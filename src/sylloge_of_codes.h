@@ -2,6 +2,7 @@
 #include <ctime>
 #include <cmath>
 #include <libintl.h>
+#include <locale.h>
 #include <sqlite3.h>
 
 #include <Poco/Timestamp.h>

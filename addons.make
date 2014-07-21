@@ -1,3 +1,4 @@
 ofxSQLite
 ofxTextSuite
 ofxXmlSettings
+ofxFTGL

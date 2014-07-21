@@ -2,24 +2,26 @@
 
 //--------------------------------------------------------------
 void sylloge_of_codes::setup(){
+#ifdef FTGLES
+    // For FTGLES
+    font.loadFont("SourceSansPro-Black.otf", 72, true, true);        
+#else
+    font.loadFont("SourceSansPro-Black.otf", 60);
+#endif
+
+    // Setup settings filenames
     const string settingsFilename = "sylloge_of_codes_settings.xml";
     const string textLinesFilename = "textLines.xml";
     skipIntro = false;
 
-    // Sounds
-    reader.loadSound("sounds/Violet.mp3");
-    reader.setVolume(0.75f);
-    reader.setMultiPlay(false);
-
+    // Misc setup
 	ofBackground(255,255,255);
     currentSequenceIndex = -1;
     ofSetFrameRate(60);
     ofEnableAlphaBlending();
     ofHideCursor();
-	//ofSetFullscreen(true);
     loopCounter = 0;
     syllogeDebug = SYLLOGE_DEBUG;
-    syllogeSounds = SYLLOGE_SOUNDS;
 
     // Quick estimate of the number of words we can display onscreen at a time
     // String tokenizer in C++: http://stackoverflow.com/questions/10051679/c-tokenize-string
@@ -31,9 +33,6 @@ void sylloge_of_codes::setup(){
     // Output screen infos
     ofLog(OF_LOG_NOTICE, "window width: %d", ofGetWindowWidth());
     ofLog(OF_LOG_NOTICE, "window height: %d", ofGetWindowHeight());
-    //ofLog(OF_LOG_NOTICE, "x-width: %f", myText.defaultFont.stringWidth("x"));
-    //ofLog(OF_LOG_NOTICE, "y-height: %f", myText.defaultFont.stringHeight("l"));
-    //ofLog(OF_LOG_NOTICE, "line-height: %f", myText.defaultFont.getLineHeight());
 
     // TODO
     // Set real tzd
@@ -46,25 +45,24 @@ void sylloge_of_codes::setup(){
     //Poco::LocalDateTime ldt(tzd, dt);
 
     // SETUP INTRO TEXT
+    TextLine introText;
+    introText.text = gettext("sylloge of codes");
+    introText.font = "SourceSansPro-Black.otf";
+    introText.fontSize = 60.0;
+    introText.fColor = ofColor(255.0, 0.0, 0.0);
+    introText.bColor = ofColor(255.0, 255.0, 255.0);
+    introText.fade = false;
+    introText.startTime = 0.0;
+    introText.duration = 10.0;
+    introText.delta = 0.0;
+    introText.xPos = centerX(font.stringWidth(introText.text));
+    introText.yPos = centerY(font.stringHeight(introText.text));
+    addToSequence(introText, sequence);
 
-    ofxTextBlock intro;
-    intro.init("SourceSansPro-Black.otf", 60);
-    intro.setText(gettext("sylloge of codes"));
-    intro.wrapTextX(ofGetWidth() - (0.1 * ofGetWidth()));
-    intro.setColor(255, 0, 0, 255);
-    Segment segment;
-    segment.startTime = 0.0;
-    segment.delta = 0.0;
-    segment.duration = 10.0;
-    segment.fade = false;
-    segment.textBlock = intro;
-    segment.xPos = centerX(intro);
-    segment.yPos = centerY(intro);
-    segment.backgroundColor = ofColor::white;
-    addToSequence(segment, sequence);
-
+    // Read our XML file
     textLines.loadFile(textLinesFilename);
 
+    // Load the file into our structure
     if (!skipIntro) {
         ofLog(OF_LOG_NOTICE, "Loading text...");
         loadTextLines(sequence);
@@ -79,6 +77,7 @@ void sylloge_of_codes::setup(){
     settings.setValue("settings:databaseLocation", databaseLocation);
     settings.saveFile(settingsFilename);
 
+    /*
     // Get first random selection from database
     selectRandomCode(currentCode);
 
@@ -113,28 +112,29 @@ void sylloge_of_codes::setup(){
     i18nText.init("SourceSansPro-Regular.otf", 30);
     i18nText.setText(gettext("This is a test that ought to be translated into another language."));
     i18nText.wrapTextX(ofGetWidth()/2 - 10);
+    */
     
     ofLog(OF_LOG_NOTICE, "Starting...");
     ofResetElapsedTimeCounter();
 }
 
-void sylloge_of_codes::addToSequence(Segment& segment, vector<Segment>& sequence) {
-    Segment previousSegment;
+void sylloge_of_codes::addToSequence(TextLine& textLine, vector<TextLine>& sequence) {
+    TextLine previousTextLine;
     if (sequence.size() != 0) {
-        previousSegment = sequence.at(sequence.size() - 1);
-        segment.startTime = previousSegment.startTime + previousSegment.duration + segment.delta;
+        previousTextLine = sequence.at(sequence.size() - 1);
+        textLine.startTime = previousTextLine.startTime + previousTextLine.duration + textLine.delta;
     }
 
-    if (segment.fade) {
-        segment.currentAlpha = 0.0;
+    if (textLine.fade) {
+        textLine.currentAlpha = 0.0;
     } else {
-        segment.currentAlpha = 255.0;
+        textLine.currentAlpha = 255.0;
     }
 
     // TODO
     // Not sure why this was here in the first place
-    //segment.textBlock.setColor(255, 0, 0, segment.currentAlpha);
-    sequence.push_back(segment);
+    //textLine.textBlock.setColor(255, 0, 0, textLine.currentAlpha);
+    sequence.push_back(textLine);
 }
 
 void sylloge_of_codes::selectRandomCode(Sylloge& code) {
@@ -158,16 +158,14 @@ void sylloge_of_codes::selectRandomCode(Sylloge& code) {
 
 }
 
-float sylloge_of_codes::centerX(ofxTextBlock textBlock) {
-    float textWidth = textBlock.getWidth();
-    float textCenter = textWidth / 2.0f;
+float sylloge_of_codes::centerX(float stringWidth) {
+    float textCenter = stringWidth / 2.0f;
 
     return (ofGetWindowWidth()/2 - textCenter);
 }
 
-float sylloge_of_codes::centerY(ofxTextBlock textBlock) {
-    float textHeight = textBlock.getHeight();
-    float textCenter = textHeight/ 2.0f;
+float sylloge_of_codes::centerY(float stringHeight) {
+    float textCenter = stringHeight/ 2.0f;
 
     return (ofGetWindowHeight()/2 - textCenter);
 }
@@ -180,14 +178,13 @@ void sylloge_of_codes::setSyllogeCount() {
 
 //--------------------------------------------------------------
 void sylloge_of_codes::update(){
-    ofSoundUpdate();
 
     if (currentSequenceIndex != -1) {
-        Segment current;
+        TextLine current;
         current = sequence.at(currentSequenceIndex);
-        ofBackground(current.backgroundColor.r,
-                current.backgroundColor.g,
-                current.backgroundColor.b);
+        ofBackground(current.bColor.r,
+                current.bColor.g,
+                current.bColor.b);
         ofFill();
     } else {
         ofBackground(255, 255, 255);
@@ -195,44 +192,52 @@ void sylloge_of_codes::update(){
     }
 }
 
-void sylloge_of_codes::segmentFadeIn(vector<Segment>& sequence, int index) {
-    sequence.at(index).textBlock.setColor(255, 0, 0, sequence.at(index).currentAlpha);
+void sylloge_of_codes::segmentFadeIn(vector<TextLine>& sequence, int index) {
+    TextLine current;
+    current = sequence.at(index);
+#ifdef FTGLES
+    font.setColor(current.fColor.r, current.fColor.g, current.fColor.b, current.currentAlpha);
+#else
+    ofSetColor(current.fColor.r, current.fColor.g, current.fColor.b, current.currentAlpha);
+#endif
     sequence.at(index).currentAlpha = ofLerp(sequence.at(index).currentAlpha, 255, 0.08);
 }
 
-void sylloge_of_codes::loadTextLines(vector<Segment>& sequence) {
+void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
     // Go through each element in the XML file
-    
-    ofxTextBlock text;
+  
+    TextLine textLine;
+
     textLines.pushTag("lines");
     for (int i = 0; i < textLines.getNumTags("line"); i++) {
         textLines.pushTag("line", i);
-        text.init(textLines.getValue("font", "SourceSansPro-Black.otf"), 40);
-        const char* line = textLines.getValue("text", "").c_str();
-        text.setText(gettext(line));
-        ofLog(OF_LOG_NOTICE, ofToString(textLines.getValue("text", "")));
-        text.wrapTextX(ofGetWidth() - (0.2 * ofGetWidth()));
-        text.setColor(textLines.getValue("fRed", 255), textLines.getValue("fGreen", 0), textLines.getValue("fBlue", 0), 255);
-        Segment segment;
-        segment.startTime = 0.0;
-        segment.delta = textLines.getValue("delta", 0.25);
-        segment.duration = textLines.getValue("duration", 2);
-        segment.fade = false;
-        segment.textBlock = text;
-        segment.xPos = centerX(text);
-        segment.yPos = centerY(text);
+
+        textLine.font = textLines.getValue("font", "SourceSansPro-Black.otf");
+        textLine.fontSize = 30.0;
+        const char *line = textLines.getValue("text", "").c_str();
+        textLine.text = gettext(line);
+        textLine.xPos = centerX(font.stringWidth(textLine.text));
+        textLine.yPos = centerY(font.stringHeight(textLine.text));
+        textLine.fColor = ofColor(textLines.getValue("fRed", 255), textLines.getValue("fGreen", 0), textLines.getValue("fBlue", 0), 255);
+        textLine.bColor = ofColor(textLines.getValue("bRed", 255), textLines.getValue("bGreen", 255), textLines.getValue("bBlue", 255), 255);
+        textLine.startTime = 0.0;
+        textLine.delta = textLines.getValue("delta", 0.25);
+        textLine.duration = textLines.getValue("duration", 2);
+        textLine.fade = false;
+        /*
         ofColor bColor;
         bColor.r = textLines.getValue("bRed", 255);
         bColor.g = textLines.getValue("bGreen", 255);
         bColor.b = textLines.getValue("bBlue", 255);
         segment.backgroundColor = bColor;
-        addToSequence(segment, sequence);
+        */
+        addToSequence(textLine, sequence);
         textLines.popTag();
     }
     textLines.popTag();
 }
 
-void sylloge_of_codes::resetSequence(vector<Segment>& sequence) {
+void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
     // Reset the randomly chosen code
     // TODO
     // Make the match the number of opening segments (which is right now only one)
@@ -240,6 +245,8 @@ void sylloge_of_codes::resetSequence(vector<Segment>& sequence) {
     //loadTextLines(sequence);
     selectRandomCode(currentCode);
 
+    /* TODO
+     * Make this work with new TextLine setup
     Segment newSegment;
     ofxTextBlock textBlock;
     textBlock.init("SourceSansPro-Regular.otf", 30);
@@ -258,12 +265,13 @@ void sylloge_of_codes::resetSequence(vector<Segment>& sequence) {
     newSegment.xPos = 0.25 * ofGetWidth();
     newSegment.yPos = 10;
     addToSequence(newSegment, sequence);
+    */
 
     // Reset the fades
     for (unsigned int index = 0; index < sequence.size(); ++index) {
         if (sequence.at(index).fade) {
             sequence.at(index).currentAlpha = 0;
-            sequence.at(index).textBlock.setColor(255, 0, 0, sequence.at(index).currentAlpha);
+            //sequence.at(index).textBlock.setColor(255, 0, 0, sequence.at(index).currentAlpha);
         }
     }
 }
@@ -274,7 +282,7 @@ void sylloge_of_codes::draw(){
 	//ofFill();
 
 
-    Segment segment;
+    TextLine textLine;
     
     for (unsigned int index = 0; index < sequence.size(); ++index) {
         //segment = sequence.at(index);
@@ -287,7 +295,13 @@ void sylloge_of_codes::draw(){
                 if (sequence.at(index).fade) {
                     segmentFadeIn(sequence, index);
                 }
-                sequence.at(index).textBlock.draw(sequence.at(index).xPos, sequence.at(index).yPos);
+                textLine = sequence.at(index);
+#ifdef FTGLES
+    font.setColor(textLine.fColor.r, textLine.fColor.g, textLine.fColor.b, textLine.currentAlpha);
+#else
+    ofSetColor(textLine.fColor.r, textLine.fColor.g, textLine.fColor.b, textLine.currentAlpha);
+#endif
+                font.drawString(textLine.text, textLine.xPos, textLine.yPos);
                 currentSequenceIndex = index;
             }
         }
@@ -301,14 +315,11 @@ void sylloge_of_codes::draw(){
         ofDrawBitmapString(fpsString, 10, 30);
         loopCounterString = "Loop count: "+ ofToString(loopCounter);
         ofDrawBitmapString(loopCounterString, 10, 50);
-        playSoundsString = "Playing sounds: "+ ofToString(syllogeSounds);
-        ofDrawBitmapString(playSoundsString, 10, 70);
-
     }
 
     // Check if we need to loop back to the beginning
-    segment = sequence.at(sequence.size() - 1);
-    if (ofGetElapsedTimef() > (segment.startTime + segment.duration + segment.delta)) {
+    textLine = sequence.at(sequence.size() - 1);
+    if (ofGetElapsedTimef() > (textLine.startTime + textLine.duration + textLine.delta)) {
         currentSequenceIndex = -1;
         ofResetElapsedTimeCounter();
         resetSequence(sequence);
@@ -324,13 +335,8 @@ void sylloge_of_codes::keyPressed (int key){
 	    ofToggleFullscreen();
     } else if ((key == 'd') || (key == 'D')) {
        syllogeDebug = !syllogeDebug;
-    } else if ((key == 's') || (key == 'S')) {
-        syllogeSounds = !syllogeSounds;
-    } else if ((key == 'p') || (key == 'P')) {
-        reader.play();
     }
 }
-
 //--------------------------------------------------------------
 void sylloge_of_codes::keyReleased  (int key){
 }

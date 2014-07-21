@@ -19,8 +19,13 @@
 #include "ofxSQLiteHeaders.h"
 #include "ofxXmlSettings.h"
 
+#ifdef FTGLES
+#include "ofxFTGLESFont.h"
+#else
+#include "ofxFTGL.h"
+#endif
+
 #define SYLLOGE_DEBUG 1
-#define SYLLOGE_SOUNDS 1
 
 using Poco::Timestamp;
 using Poco::DateTime;
@@ -41,17 +46,33 @@ struct Sylloge {
     bool enabled;
 };
 
+struct TextLine {
+    string text;
+    float startTime; // in seconds
+    float duration; // in seconds
+    float delta; // in seconds
+    bool fade;
+    float fadeDuration; // in seconds
+    float currentAlpha;
+    ofColor fColor;
+    ofColor bColor;
+    string font;
+    float fontSize;
+    float xPos;
+    float yPos;
+};
+
 struct Segment {
     float startTime;    // in seconds
     float delta;        // in seconds;
     float duration;     // in seconds
     float fadeDuration; // in seconds
     bool fade;
-    float currentAlpha;
     ofxTextBlock textBlock;    
     ofColor backgroundColor;
     int xPos;
     int yPos;
+    TextLine textLine;
 };
 
 class sylloge_of_codes : public ofBaseApp{
@@ -107,17 +128,19 @@ class sylloge_of_codes : public ofBaseApp{
         Sylloge currentCode;
         int currentSequenceIndex;
         float alpha;
-        float centerX(ofxTextBlock textBlock);
-        float centerY(ofxTextBlock textBlock);
-        void addToSequence(Segment& segment, vector<Segment>& sequence);
-        void segmentFadeIn(vector<Segment>& sequence, int index);
-        void resetSequence(vector<Segment>& sequence);
+        float centerX(float stringWidth);
+        float centerY(float stringHeight);
+        void addToSequence(TextLine& textLine, vector<TextLine>& sequence);
+        void segmentFadeIn(vector<TextLine>& sequence, int index);
+        void resetSequence(vector<TextLine>& sequence);
         void selectRandomCode(Sylloge& currentCode);
-        void loadTextLines(vector<Segment>& sequence);
-
-        // Sounds
-        ofSoundPlayer reader;
+        void loadTextLines(vector<TextLine>& sequence);
     private:
+#ifdef FTGLES
+        ofxFTGLESFont font
+#else
+        ofxFTGLFont font;
+#endif
         // Settings
         ofxXmlSettings settings;
         ofxXmlSettings textLines;
@@ -128,7 +151,7 @@ class sylloge_of_codes : public ofBaseApp{
         string fpsString;
         string loopCounterString;
         string playSoundsString;
-        vector<Segment> sequence;
+        vector<TextLine> sequence;
         vector<string> textFragments;
         bool skipIntro;
 

@@ -15,7 +15,7 @@
 #include <Poco/DateTimeParser.h>
 
 #include "ofMain.h"
-//#include "ofxSQLiteHeaders.h"
+#include "ofxSQLiteHeaders.h"
 #include "ofxXmlSettings.h"
 
 #ifdef FTGLES
@@ -114,8 +114,8 @@ class sylloge_of_codes : public ofBaseApp{
         // Time zone differential
         int tzd;
 
-        // CSV
-        //ofxSQLite* sqlite;
+        // sqlite
+        ofxSQLite* sqlite;
 
         // Current number of entries in the database
         int syllogeCount;
@@ -135,7 +135,8 @@ class sylloge_of_codes : public ofBaseApp{
 #ifdef FTGLES
         ofxFTGLESFont font;
 #else
-        ofxFTGLFont font;
+        //ofxFTGLFont font;
+        ofxFTGLSimpleLayout font;
 #endif
         // Settings
         ofxXmlSettings settings;

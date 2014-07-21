@@ -4,9 +4,10 @@
 void sylloge_of_codes::setup(){
 #ifdef FTGLES
     // For FTGLES
-    font.loadFont("SourceSansPro-Black.otf", 72, true, true);        
+    font.loadFont("SourceSansPro-Black.otf", 56, true, true);        
 #else
-    font.loadFont("SourceSansPro-Black.otf", 60);
+    font.loadFont("SourceSansPro-Black.otf", 40);
+    font.setLineLength(0.8 * ofGetWindowWidth());
 #endif
 
     // Setup settings filenames
@@ -71,13 +72,12 @@ void sylloge_of_codes::setup(){
     settings.loadFile(settingsFilename);
     string databaseLocation = settings.getValue("settings:databaseLocation", "/home/nknouf/sylloge_of_codes.sqlite");
 
-    //sqlite = new ofxSQLite(databaseLocation); 
+    sqlite = new ofxSQLite(databaseLocation); 
 
     // Ensure that the settings are saved
     settings.setValue("settings:databaseLocation", databaseLocation);
     settings.saveFile(settingsFilename);
 
-    /*
     // Get first random selection from database
     selectRandomCode(currentCode);
 
@@ -87,32 +87,20 @@ void sylloge_of_codes::setup(){
     completeText = stringStream.str();
 
     // Setup random selection segment
-    intro.setText(completeText);
-    intro.wrapTextX(0.7 * ofGetWidth());
-    intro.setColor(255, 0, 0, 255);
-    segment.startTime = 0.0;
-    segment.delta = 3.0;
-    segment.duration = 25.0;
-    segment.fade = false;
-    segment.textBlock = intro;
-    segment.xPos = 0.25 * ofGetWidth();
-    segment.yPos = 10;
-    segment.backgroundColor = ofColor::white;
-    addToSequence(segment, sequence);
+    TextLine dbText;
+    dbText.text = completeText;
+    dbText.font = "SourceSansPro-Black.otf";
+    dbText.fontSize = 60.0;
+    dbText.fColor = ofColor(255.0, 0.0, 0.0);
+    dbText.bColor = ofColor(255.0, 255.0, 255.0);
+    dbText.startTime = 0.0;
+    dbText.delta = 3.0;
+    dbText.duration = 25.0;
+    dbText.fade = false;
+    dbText.xPos = 0.25 * ofGetWidth();
+    dbText.yPos = 10;
+    addToSequence(dbText, sequence);
    
-    // 23 lines visible right now...
-    myText.init("SourceSansPro-Regular.otf", 30);
-    myText.setText(completeText);
-    int numLines = myText.wrapTextX(ofGetWidth()/2 - offset);
-    if (numLines > ((float) ofGetWindowHeight() / (float) myText.defaultFont.getLineHeight())) {
-        ofLog(OF_LOG_NOTICE, "Too many lines!");
-    }
-    //ofLog(OF_LOG_NOTICE, "numLines: %d", numLines);
-
-    i18nText.init("SourceSansPro-Regular.otf", 30);
-    i18nText.setText(gettext("This is a test that ought to be translated into another language."));
-    i18nText.wrapTextX(ofGetWidth()/2 - 10);
-    */
     
     ofLog(OF_LOG_NOTICE, "Starting...");
     ofResetElapsedTimeCounter();
@@ -137,7 +125,6 @@ void sylloge_of_codes::addToSequence(TextLine& textLine, vector<TextLine>& seque
     sequence.push_back(textLine);
 }
 
-/*
 void sylloge_of_codes::selectRandomCode(Sylloge& code) {
     setSyllogeCount();
     srand(time(0));
@@ -158,7 +145,6 @@ void sylloge_of_codes::selectRandomCode(Sylloge& code) {
     }
 
 }
-*/
 
 float sylloge_of_codes::centerX(float stringWidth) {
     float textCenter = stringWidth / 2.0f;
@@ -167,18 +153,16 @@ float sylloge_of_codes::centerX(float stringWidth) {
 }
 
 float sylloge_of_codes::centerY(float stringHeight) {
-    float textCenter = stringHeight/ 2.0f;
+    //float textCenter = stringHeight/ 2.0f;
 
-    return (ofGetWindowHeight()/2 - textCenter);
+    return (ofGetWindowHeight()/2);
 }
 
-/*
 void sylloge_of_codes::setSyllogeCount() {
     ofxSQLiteSelect sel = sqlite->select("count(*) as total").from("sylloge");
     sel.execute().begin();
     syllogeCount = sel.getInt();
 }
-*/
 
 //--------------------------------------------------------------
 void sylloge_of_codes::update(){
@@ -247,7 +231,7 @@ void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
     // Make the match the number of opening segments (which is right now only one)
     sequence.erase(sequence.begin() + sequence.size() - 1, sequence.begin() + sequence.size());
     //loadTextLines(sequence);
-    //selectRandomCode(currentCode);
+    selectRandomCode(currentCode);
 
     /* TODO
      * Make this work with new TextLine setup

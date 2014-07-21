@@ -71,7 +71,7 @@ void sylloge_of_codes::setup(){
     settings.loadFile(settingsFilename);
     string databaseLocation = settings.getValue("settings:databaseLocation", "/home/nknouf/sylloge_of_codes.sqlite");
 
-    sqlite = new ofxSQLite(databaseLocation); 
+    //sqlite = new ofxSQLite(databaseLocation); 
 
     // Ensure that the settings are saved
     settings.setValue("settings:databaseLocation", databaseLocation);
@@ -137,6 +137,7 @@ void sylloge_of_codes::addToSequence(TextLine& textLine, vector<TextLine>& seque
     sequence.push_back(textLine);
 }
 
+/*
 void sylloge_of_codes::selectRandomCode(Sylloge& code) {
     setSyllogeCount();
     srand(time(0));
@@ -157,6 +158,7 @@ void sylloge_of_codes::selectRandomCode(Sylloge& code) {
     }
 
 }
+*/
 
 float sylloge_of_codes::centerX(float stringWidth) {
     float textCenter = stringWidth / 2.0f;
@@ -170,11 +172,13 @@ float sylloge_of_codes::centerY(float stringHeight) {
     return (ofGetWindowHeight()/2 - textCenter);
 }
 
+/*
 void sylloge_of_codes::setSyllogeCount() {
     ofxSQLiteSelect sel = sqlite->select("count(*) as total").from("sylloge");
     sel.execute().begin();
     syllogeCount = sel.getInt();
 }
+*/
 
 //--------------------------------------------------------------
 void sylloge_of_codes::update(){
@@ -243,7 +247,7 @@ void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
     // Make the match the number of opening segments (which is right now only one)
     sequence.erase(sequence.begin() + sequence.size() - 1, sequence.begin() + sequence.size());
     //loadTextLines(sequence);
-    selectRandomCode(currentCode);
+    //selectRandomCode(currentCode);
 
     /* TODO
      * Make this work with new TextLine setup

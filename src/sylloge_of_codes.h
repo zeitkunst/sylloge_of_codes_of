@@ -15,8 +15,7 @@
 #include <Poco/DateTimeParser.h>
 
 #include "ofMain.h"
-#include "ofxTextSuite.h"
-#include "ofxSQLiteHeaders.h"
+//#include "ofxSQLiteHeaders.h"
 #include "ofxXmlSettings.h"
 
 #ifdef FTGLES
@@ -68,7 +67,6 @@ struct Segment {
     float duration;     // in seconds
     float fadeDuration; // in seconds
     bool fade;
-    ofxTextBlock textBlock;    
     ofColor backgroundColor;
     int xPos;
     int yPos;
@@ -101,8 +99,6 @@ class sylloge_of_codes : public ofBaseApp{
 		ofTrueTypeFont testFont2;
 		ofTTFCharacter testChar;
 		char letter;
-        ofxTextBlock myText;
-        ofxTextBlock i18nText;
 
         // Strings for overall text
         std::string completeText;
@@ -119,7 +115,7 @@ class sylloge_of_codes : public ofBaseApp{
         int tzd;
 
         // CSV
-        ofxSQLite* sqlite;
+        //ofxSQLite* sqlite;
 
         // Current number of entries in the database
         int syllogeCount;
@@ -137,7 +133,7 @@ class sylloge_of_codes : public ofBaseApp{
         void loadTextLines(vector<TextLine>& sequence);
     private:
 #ifdef FTGLES
-        ofxFTGLESFont font
+        ofxFTGLESFont font;
 #else
         ofxFTGLFont font;
 #endif

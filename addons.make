@@ -1,4 +1,2 @@
-ofxSQLite
-ofxTextSuite
 ofxXmlSettings
-ofxFTGL
+ofxFTGLES

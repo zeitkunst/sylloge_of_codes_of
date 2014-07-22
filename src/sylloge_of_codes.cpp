@@ -107,7 +107,20 @@ void sylloge_of_codes::setup(){
     dbText.xPos = 0.25 * ofGetWidth();
     dbText.yPos = 10;
     addToSequence(dbText, sequence);
-   
+
+    currentTextLine = sequence.at(currentSequenceIndex);
+    font.setSize(currentTextLine.fontSize);
+    ofRectangle rect = font.getStringBoundingBox(currentTextLine.text, 0, 0);
+    
+    float width = rect.width;
+    float height = rect.height;
+    ofLog(OF_LOG_NOTICE, ofToString(width));
+    ofLog(OF_LOG_NOTICE, ofToString(height));
+
+    sequence.at(currentSequenceIndex).xPos = (ofGetWindowWidth()/2) - (width/2);
+    sequence.at(currentSequenceIndex).yPos = (ofGetWindowHeight()/2) + (height/2);
+
+
     
     ofLog(OF_LOG_NOTICE, "Starting sylloge of codes...");
     setLastTime(sequence);
@@ -201,13 +214,14 @@ void sylloge_of_codes::update(){
         currentTextLine = sequence.at(currentSequenceIndex);
         font.setSize(currentTextLine.fontSize);
         ofRectangle rect = font.getStringBoundingBox(currentTextLine.text, 0, 0);
+        
         float width = rect.width;
         float height = rect.height;
         ofLog(OF_LOG_NOTICE, ofToString(width));
         ofLog(OF_LOG_NOTICE, ofToString(height));
 
         sequence.at(currentSequenceIndex).xPos = (ofGetWindowWidth()/2) - (width/2);
-        sequence.at(currentSequenceIndex).yPos = (ofGetWindowHeight()/2) - (height/2);
+        sequence.at(currentSequenceIndex).yPos = (ofGetWindowHeight()/2) + (height/2);
 
 
     } else if (currentFrame >= lastTime) {
@@ -305,7 +319,6 @@ void sylloge_of_codes::draw() {
 #else
         ofSetColor(currentTextLine.fColor.r, currentTextLine.fColor.g, currentTextLine.fColor.b, currentTextLine.currentAlpha);
 #endif
-        font.setSize(currentTextLine.fontSize);
         font.drawString(currentTextLine.text, currentTextLine.xPos, currentTextLine.yPos);
     }
 

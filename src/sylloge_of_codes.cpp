@@ -55,24 +55,6 @@ void sylloge_of_codes::setup(){
     //Poco::Timestamp ts = dt.timestamp();
     //Poco::LocalDateTime ldt(tzd, dt);
 
-    /*
-    // SETUP INTRO TEXT
-    TextLine introText;
-    introText.text = gettext("sylloge of codes");
-    introText.font = "SourceSansPro-Black.otf";
-    introText.fontSize = 56.0;
-    introText.fColor = ofColor(255.0, 0.0, 0.0);
-    introText.bColor = ofColor(255.0, 255.0, 255.0);
-    introText.fade = false;
-    introText.startTime = 0.0;
-    introText.duration = 10.0; // original, desired duration
-    //introText.duration = 1.0; // testing duration
-    introText.delta = 2.0;
-    introText.xPos = centerX(font.stringWidth(introText.text));
-    introText.yPos = centerY(font.stringHeight(introText.text));
-    addToSequence(introText, sequence);
-    */
-
     // Read our XML file
     textLines.loadFile(textLinesFilename);
 
@@ -104,8 +86,8 @@ void sylloge_of_codes::setup(){
     ofLog(OF_LOG_NOTICE, ofToString(width));
     ofLog(OF_LOG_NOTICE, ofToString(height));
 
-    sequence.at(currentSequenceIndex).xPos = (ofGetWindowWidth()/2) - (width/2);
-    sequence.at(currentSequenceIndex).yPos = (ofGetWindowHeight()/2) + (height/2);
+    //sequence.at(currentSequenceIndex).xPos = (ofGetWindowWidth()/2) - (width/2);
+    //sequence.at(currentSequenceIndex).yPos = (ofGetWindowHeight()/2) + (height/2);
 
 
     
@@ -131,9 +113,6 @@ void sylloge_of_codes::addToSequence(TextLine& textLine, vector<TextLine>& seque
         textLine.currentAlpha = 255.0;
     }
 
-    // TODO
-    // Not sure why this was here in the first place
-    //textLine.textBlock.setColor(255, 0, 0, textLine.currentAlpha);
     sequence.push_back(textLine);
 }
 
@@ -330,7 +309,20 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
         completeText = oStringStream.str();
     
         //dbText.xPos = 0.25 * ofGetWidth();
-        dbText.yPos = 50;
+        //dbText.yPos = 50;
+
+        font.setSize(dbText.fontSize);
+        ofRectangle rect = font.getStringBoundingBox(dbText.text, 0, 0);
+            
+        float width = rect.width;
+        float height = rect.height;
+        ofLog(OF_LOG_NOTICE, ofToString(width));
+        ofLog(OF_LOG_NOTICE, ofToString(height));
+    
+        dbText.xPos = 80;
+        dbText.yPos = 80;
+
+
         dbText.text = completeText;
         addToSequence(dbText, sequence);
 
@@ -446,65 +438,9 @@ void sylloge_of_codes::draw() {
 
 }
 
-/* ORIGINAL DRAW METHOD
-void sylloge_of_codes::draw(){
-    TextLine textLine;
-    
-    for (unsigned int index = 0; index < sequence.size(); ++index) {
-        //segment = sequence.at(index);
-        if (sequence.at(index).startTime < ofGetElapsedTimef()) {
-            if (ofGetElapsedTimef() > (sequence.at(index).startTime + sequence.at(index).duration)) {
-                continue;
-            } else {
-                // TODO
-                // Enable fading over a duration; enable fade-out
-                if (sequence.at(index).fade) {
-                    segmentFadeIn(sequence, index);
-                }
-                textLine = sequence.at(index);
-#ifdef FTGLES
-                font.setColor(textLine.fColor.r, textLine.fColor.g, textLine.fColor.b, textLine.currentAlpha);
-#else
-                ofSetColor(textLine.fColor.r, textLine.fColor.g, textLine.fColor.b, textLine.currentAlpha);
-#endif
-                //font.drawString(textLine.text, textLine.xPos, textLine.yPos);
-                //ofRectangle foo = font.getStringBoundingBox(textLine.text, 0, textLine.yPos);
-                //ofLog(OF_LOG_NOTICE, ofToString(foo));
-                font.setSize(textLine.fontSize);
-                font.drawString(textLine.text, textLine.xPos, textLine.yPos);
-                currentSequenceIndex = index;
-            }
-        }
-    }
-
-    if (syllogeDebug) {
-        ofSetColor(0, 0, 0, 255);
-        elapsedTimeString = "Elapsed time: " + ofToString(ofGetElapsedTimef());
-        ofDrawBitmapString(elapsedTimeString, 10, 10);
-        fpsString = "frame rate: "+ ofToString(ofGetFrameRate(), 2);
-        ofDrawBitmapString(fpsString, 10, 30);
-        loopCounterString = "Loop count: "+ ofToString(loopCounter);
-        ofDrawBitmapString(loopCounterString, 10, 50);
-    }
-
-    // Check if we need to loop back to the beginning
-    textLine = sequence.at(sequence.size() - 1);
-    if (ofGetElapsedTimef() > (textLine.startTime + textLine.duration + textLine.delta)) {
-        currentSequenceIndex = -1;
-        ofResetElapsedTimeCounter();
-        resetSequence(sequence);
-        loopCounter += 1;
-    }
-}
-*/
-
 //--------------------------------------------------------------
 void sylloge_of_codes::keyPressed (int key){
-    if ((key == 'f') || (key == 'F')) {
-        // TODO
-        // Make this update window boxes, layout, etc.
-	    ofToggleFullscreen();
-    } else if ((key == 'd') || (key == 'D')) {
+    if ((key == 'd') || (key == 'D')) {
        syllogeDebug = !syllogeDebug;
     }
 }
@@ -545,71 +481,4 @@ void sylloge_of_codes::dragEvent(ofDragInfo dragInfo){
 
 }
 
-// CRUFT BELOW!
-//
-//#include <sqlite3.h>
-//#include "Poco/Data/Common.h"
-//#include "Poco/Data/SQLite/Connector.h"
-//using namespace Poco::Data;
-//using namespace std;
-//    char *sql;
-//    const char* msg = "Callback function called";
-//    Sylloge code;
-
-//
-//    SQLite::Connector::registerConnector();
-//    Session session("SQLite", "/Users/nknouf/src/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite");
-//    Statement select(session);
-//    select << "SELECT * FROM sylloge",
-//           into(code.id),
-//           into(code.code),
-//           into(code.comment),
-//           into(code.pseudonym),
-//           into(code.datetime),
-//           into(code.enabled),
-//           range(0, 1);
-//    
-//    while (!select.done()) {
-//        select.execute();
-//        ofLog(OF_LOG_NOTICE, "id: %d\n", code.id);
-//        ofLog(OF_LOG_NOTICE, "code: %s\n", code.code.c_str());
-//        ofLog(OF_LOG_NOTICE, "comment: %s\n", code.comment.c_str());
-//        ofLog(OF_LOG_NOTICE, "pseudonym: %s\n", code.pseudonym.c_str());
-//        ofLog(OF_LOG_NOTICE, "datetime: %s\n", code.datetime.c_str());
-//        ofLog(OF_LOG_NOTICE, "enabled: %d\n", code.enabled);
-//    }
-//    SQLite::Connector::unregisterConnector();
-
-    /*
-    rc = sqlite3_open("/Users/nknouf/src/sylloge_of_codes/sylloge_of_codes/sylloge_of_codes.sqlite", &db);
-
-    if (rc) {
-        ofLog(OF_LOG_NOTICE, "Can't open database: %s\n", sqlite3_errmsg(db));
-    } else {
-        ofLog(OF_LOG_NOTICE, "Opened database successfully\n");
-    }
-
-    sql = "SELECT * from sylloge";
-
-    rc = sqlite3_exec(db, sql, basicCallback, (void*)msg, &zErrMsg);
-    if (rc != SQLITE_OK) {
-        ofLog(OF_LOG_ERROR, "SQL error: %s\n", zErrMsg);
-        sqlite3_free(zErrMsg);
-    } else {
-        ofLog(OF_LOG_NOTICE, "Select done successfully\n");
-    }
-
-    sqlite3_close(db);
-
-int sylloge_of_codes::basicCallback(void *data, int argc, char **argv, char **azColName) {
-    int i;
-    ofLog(OF_LOG_NOTICE, "%s: ", (const char*)data);
-    for (i = 0; i < argc; i++) {
-        ofLog(OF_LOG_NOTICE, "%s = %s\n", azColName[i], argv [i] ? argv[i] : "NULL");
-    }
-    printf("\n");
-    return 0;
-}
-
-    */
 

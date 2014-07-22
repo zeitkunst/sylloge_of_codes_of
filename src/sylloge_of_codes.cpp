@@ -111,6 +111,7 @@ void sylloge_of_codes::setup(){
     
     ofLog(OF_LOG_NOTICE, "Starting sylloge of codes...");
     setLastTime(sequence);
+    
     ofResetElapsedTimeCounter();
 }
 
@@ -118,7 +119,9 @@ void sylloge_of_codes::addToSequence(TextLine& textLine, vector<TextLine>& seque
     TextLine previousTextLine;
     if (sequence.size() != 0) {
         previousTextLine = sequence.at(sequence.size() - 1);
-        textLine.startTime = previousTextLine.startTime + previousTextLine.duration + textLine.delta;
+        textLine.startTime = previousTextLine.startTime + previousTextLine.duration + previousTextLine.delta;
+    } else {
+        textLine.startTime = 0;
     }
 
     if (textLine.fade) {
@@ -195,6 +198,18 @@ void sylloge_of_codes::update(){
         drawNow = false;
     } else if (currentFrame >= (startTime + duration + delta)) {
         currentSequenceIndex += 1;
+        currentTextLine = sequence.at(currentSequenceIndex);
+        font.setSize(currentTextLine.fontSize);
+        ofRectangle rect = font.getStringBoundingBox(currentTextLine.text, 0, 0);
+        float width = rect.width;
+        float height = rect.height;
+        ofLog(OF_LOG_NOTICE, ofToString(width));
+        ofLog(OF_LOG_NOTICE, ofToString(height));
+
+        sequence.at(currentSequenceIndex).xPos = (ofGetWindowWidth()/2) - (width/2);
+        sequence.at(currentSequenceIndex).yPos = (ofGetWindowHeight()/2) - (height/2);
+
+
     } else if (currentFrame >= lastTime) {
         currentSequenceIndex = 0;
         ofResetElapsedTimeCounter();
@@ -231,7 +246,7 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
         textLines.pushTag("line", i);
 
         textLine.font = textLines.getValue("font", "SourceSansPro-Black.otf");
-        textLine.fontSize = textLines.getValue("fontSize", 30.0);
+        textLine.fontSize = textLines.getValue("fontSize", 48.0);
         const char *line = textLines.getValue("text", "").c_str();
         textLine.text = gettext(line);
         textLine.xPos = centerX(font.stringWidth(textLine.text));
@@ -239,14 +254,10 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
         textLine.fColor = ofColor(textLines.getValue("fRed", 255), textLines.getValue("fGreen", 0), textLines.getValue("fBlue", 0), 255);
         textLine.bColor = ofColor(textLines.getValue("bRed", 255), textLines.getValue("bGreen", 255), textLines.getValue("bBlue", 255), 255);
 
-        textLine.startTime = floor(0.0 * frameRate);
+        textLine.startTime = 0.0;
         textLine.duration = floor(textLines.getValue("duration", 2.0) * frameRate);
         textLine.delta = floor(textLines.getValue("delta", 0.25) * frameRate);
         textLine.fade = false;
-        ofLog(OF_LOG_NOTICE, "Item: " + ofToString(i));
-        ofLog(OF_LOG_NOTICE, "Start Time: " + ofToString(textLine.startTime));
-        ofLog(OF_LOG_NOTICE, "Duration: " + ofToString(textLine.duration));
-        ofLog(OF_LOG_NOTICE, "Delta: " + ofToString(textLine.delta));
         /*
         ofColor bColor;
         bColor.r = textLines.getValue("bRed", 255);
@@ -266,6 +277,9 @@ void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
     // Make the match the number of opening segments (which is right now only one)
     sequence.erase(sequence.begin() + sequence.size() - 1, sequence.begin() + sequence.size());
     //loadTextLines(sequence);
+    // TODO
+    // Ensure that we also add the selected random code to the sequence
+    // Also ensure that it's the appropriate number of lines
     selectRandomCode(currentCode);
     setLastTime(sequence);
 

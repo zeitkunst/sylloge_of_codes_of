@@ -26,7 +26,7 @@ void sylloge_of_codes::setup(){
     currentSequenceIndex = 0;
     loopCounter = 1;
     syllogeDebug = SYLLOGE_DEBUG;
-    skipIntro = true;
+    skipIntro = false;
     codeFragmentsAdded = 0;
 
 	ofBackground(255,255,255);
@@ -179,7 +179,7 @@ void sylloge_of_codes::setSyllogeCount() {
 
 //--------------------------------------------------------------
 void sylloge_of_codes::update(){
-    unsigned int currentFrame = ofGetFrameNum();
+    unsigned long long currentTime = ofGetElapsedTimeMillis();
 
     currentTextLine = sequence.at(currentSequenceIndex);
     float startTime = currentTextLine.startTime;
@@ -193,11 +193,11 @@ void sylloge_of_codes::update(){
     ofFill();
 
     // Determine draw or not
-    if (currentFrame < (startTime + duration)) {
+    if (currentTime < (startTime + duration)) {
         drawNow = true;
-    } else if ((currentFrame >= (startTime + duration)) && (currentFrame < (startTime + duration + delta))) {
+    } else if ((currentTime >= (startTime + duration)) && (currentTime < (startTime + duration + delta))) {
         drawNow = false;
-    } else if (currentFrame >= (startTime + duration + delta)) {
+    } else if (currentTime >= (startTime + duration + delta)) {
         currentSequenceIndex += 1;
         
         if (currentSequenceIndex != sequence.size()) {
@@ -217,7 +217,8 @@ void sylloge_of_codes::update(){
 
     } 
     
-    if (currentFrame >= lastTime) {
+    if (currentTime >= lastTime) {
+        ofLog(OF_LOG_NOTICE, "Time difference: " + ofToString(currentTime - lastTime));
         currentSequenceIndex = 0;
         ofResetElapsedTimeCounter();
         resetSequence(sequence);
@@ -254,9 +255,9 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
     dbText.fontSize = 30.0;
     dbText.fColor = ofColor(255.0, 0.0, 0.0);
     dbText.bColor = ofColor(255.0, 255.0, 255.0);
-    dbText.startTime = 0.0;
-    dbText.delta = floor(1.0 * frameRate);;
-    dbText.duration = floor(1.0 * frameRate);
+    dbText.startTime = 0;
+    dbText.delta = 1.0 * 1000;
+    dbText.duration = 1.0 * 1000;
     dbText.fade = false;
 
     // Set the font to be the correct size
@@ -338,7 +339,7 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
         completeText = oStringStream.str();
     
         //dbText.xPos = 0.25 * ofGetWidth();
-        //dbText.yPos = 10;
+        dbText.yPos = 50;
         dbText.text = completeText;
         addToSequence(dbText, sequence);
 
@@ -367,9 +368,9 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
         textLine.fColor = ofColor(textLines.getValue("fRed", 255), textLines.getValue("fGreen", 0), textLines.getValue("fBlue", 0), 255);
         textLine.bColor = ofColor(textLines.getValue("bRed", 255), textLines.getValue("bGreen", 255), textLines.getValue("bBlue", 255), 255);
 
-        textLine.startTime = 0.0;
-        textLine.duration = floor(textLines.getValue("duration", 2.0) * frameRate);
-        textLine.delta = floor(textLines.getValue("delta", 0.25) * frameRate);
+        textLine.startTime = 0;
+        textLine.duration = textLines.getValue("duration", 2.0) * 1000;
+        textLine.delta = textLines.getValue("delta", 0.25) * 1000;
         textLine.fade = false;
         /*
         ofColor bColor;
@@ -389,7 +390,11 @@ void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
     // Reset the randomly chosen code
     // TODO
     // Make the match the number of opening segments (which is right now only one)
-    sequence.erase(sequence.begin() + sequence.size() - codeFragmentsAdded, sequence.begin() + sequence.size());
+    //sequence.erase(sequence.begin() + (sequence.size() - codeFragmentsAdded), sequence.begin() + sequence.size());
+    for (int i = 0; i < codeFragmentsAdded; i++) {
+        sequence.pop_back();
+    }
+
     ofLog(OF_LOG_NOTICE, "Sequence size after erase: " + ofToString(sequence.size()));
 
     // TODO

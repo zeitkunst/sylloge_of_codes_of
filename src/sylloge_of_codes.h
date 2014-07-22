@@ -49,9 +49,9 @@ struct Sylloge {
 
 struct TextLine {
     string text;
-    float startTime; // in seconds
-    float duration; // in seconds
-    float delta; // in seconds
+    unsigned long long startTime; // in seconds
+    unsigned long long duration; // in seconds
+    unsigned long long delta; // in seconds
     bool fade;
     float fadeDuration; // in seconds
     float currentAlpha;

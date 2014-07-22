@@ -203,15 +203,6 @@ void sylloge_of_codes::update(){
         if (currentSequenceIndex != sequence.size()) {
             currentTextLine = sequence.at(currentSequenceIndex);
             font.setSize(currentTextLine.fontSize);
-            ofRectangle rect = font.getStringBoundingBox(currentTextLine.text, 0, 0);
-            
-            float width = rect.width;
-            float height = rect.height;
-            ofLog(OF_LOG_NOTICE, ofToString(width));
-            ofLog(OF_LOG_NOTICE, ofToString(height));
-    
-            sequence.at(currentSequenceIndex).xPos = (ofGetWindowWidth()/2) - (width/2);
-            sequence.at(currentSequenceIndex).yPos = (ofGetWindowHeight()/2) + (height/2);
         }
 
 
@@ -345,7 +336,7 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
 
     }
 
-    codeFragmentsAdded = sequence.size();
+    codeFragmentsAdded = currentParagraphs.size();
 
 
 }
@@ -365,6 +356,19 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
         textLine.text = gettext(line);
         textLine.xPos = centerX(font.stringWidth(textLine.text));
         textLine.yPos = centerY(font.stringHeight(textLine.text));
+
+        font.setSize(textLine.fontSize);
+        ofRectangle rect = font.getStringBoundingBox(textLine.text, 0, 0);
+            
+        float width = rect.width;
+        float height = rect.height;
+        ofLog(OF_LOG_NOTICE, ofToString(width));
+        ofLog(OF_LOG_NOTICE, ofToString(height));
+    
+        textLine.xPos = (ofGetWindowWidth()/2) - (width/2);
+        textLine.yPos = (ofGetWindowHeight()/2) + (height/2);
+
+
         textLine.fColor = ofColor(textLines.getValue("fRed", 255), textLines.getValue("fGreen", 0), textLines.getValue("fBlue", 0), 255);
         textLine.bColor = ofColor(textLines.getValue("bRed", 255), textLines.getValue("bGreen", 255), textLines.getValue("bBlue", 255), 255);
 
@@ -387,22 +391,23 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
 
 void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
     ofLog(OF_LOG_NOTICE, "in reset sequence");
-    // Reset the randomly chosen code
-    // TODO
-    // Make the match the number of opening segments (which is right now only one)
-    //sequence.erase(sequence.begin() + (sequence.size() - codeFragmentsAdded), sequence.begin() + sequence.size());
+    ofLog(OF_LOG_NOTICE, "Sequence size before pop: " + ofToString(sequence.size()));
+    ofLog(OF_LOG_NOTICE, "codeFragmentsAdded: " + ofToString(codeFragmentsAdded));
+
+    // Pop the random code fragments added
     for (int i = 0; i < codeFragmentsAdded; i++) {
         sequence.pop_back();
     }
 
     ofLog(OF_LOG_NOTICE, "Sequence size after erase: " + ofToString(sequence.size()));
 
-    // TODO
-    // Ensure that we also add the selected random code to the sequence
-    // Also ensure that it's the appropriate number of lines
+    // Add new random code, update last time
     selectRandomCode(currentCode);
     addCodeToSequence(currentCode);
     setLastTime(sequence);
+
+    // Ensure that the font size is correct for the first line
+    font.setSize(sequence.at(0).fontSize);
 
     // Reset the fades
     for (unsigned int index = 0; index < sequence.size(); ++index) {

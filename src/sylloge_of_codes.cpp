@@ -414,15 +414,6 @@ void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
 
 //--------------------------------------------------------------
 void sylloge_of_codes::draw() {
-    if (syllogeDebug) {
-        ofSetColor(0, 0, 0, 255);
-        elapsedTimeString = "Elapsed time: " + ofToString(ofGetElapsedTimef());
-        ofDrawBitmapString(elapsedTimeString, 10, 10);
-        fpsString = "frame rate: "+ ofToString(ofGetFrameRate(), 2);
-        ofDrawBitmapString(fpsString, 10, 30);
-        loopCounterString = "Loop count: "+ ofToString(loopCounter);
-        ofDrawBitmapString(loopCounterString, 10, 50);
-    }
 
     currentTextLine = sequence.at(currentSequenceIndex);
 
@@ -437,6 +428,17 @@ void sylloge_of_codes::draw() {
 #endif
         font.drawString(currentTextLine.text, currentTextLine.xPos, currentTextLine.yPos);
     }
+
+    if (syllogeDebug) {
+        ofSetColor(0, 0, 0, 255);
+        elapsedTimeString = "Elapsed time: " + ofToString(ofGetElapsedTimef());
+        ofDrawBitmapString(elapsedTimeString, 10, 10);
+        fpsString = "frame rate: "+ ofToString(ofGetFrameRate(), 2);
+        ofDrawBitmapString(fpsString, 10, 30);
+        loopCounterString = "Loop count: "+ ofToString(loopCounter);
+        ofDrawBitmapString(loopCounterString, 10, 50);
+    }
+
 
 }
 

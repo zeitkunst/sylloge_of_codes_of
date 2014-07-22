@@ -36,13 +36,7 @@ void sylloge_of_codes::setup(){
     ofSetFrameRate(frameRate);
     ofEnableAlphaBlending();
     ofHideCursor();
-
-    // Quick estimate of the number of words we can display onscreen at a time
-    // String tokenizer in C++: http://stackoverflow.com/questions/10051679/c-tokenize-string
-    // * Determine how many lines over we are, in terms of the desired height of our text block
-    // * Divide the text into a smaller amount by a proportion related to how many lines over we are (e.g., if we are 34 lines total, and we want 23 lines on screen, we need to reduce it by that factor)
-    // * Within the tokenized list of words, figure out how many words this is, and start keeping track of offsets within the list, so that we can easily move from one fragment of the text to another
-    // * This probably needs to be done as a method within the ofxTextSuite class so that we can have access to these internal members
+    ofSeedRandom(time(0));
 
     // Output screen infos
     ofLog(OF_LOG_NOTICE, "window width: %d", ofGetWindowWidth());
@@ -70,35 +64,51 @@ void sylloge_of_codes::setup(){
     settings.loadFile(settingsFilename);
     string databaseLocation = settings.getValue("settings:databaseLocation", "/home/nknouf/sylloge_of_codes.sqlite");
 
+    // ensure we also have something to display
+    TextLine firstLine;  
+    firstLine.font = "SourceSansPro-Black.otf";
+    firstLine.fontSize = 100.0;
+    firstLine.text = gettext("sylloge of codes");
+
+    font.setSize(firstLine.fontSize);
+    ofRectangle rect = font.getStringBoundingBox(firstLine.text, 0, 0);
+            
+    float width = rect.width;
+    float height = rect.height;
+    //ofLog(OF_LOG_NOTICE, ofToString(width));
+    //ofLog(OF_LOG_NOTICE, ofToString(height));
+    
+    firstLine.xPos = (ofGetWindowWidth()/2) - (width/2);
+    firstLine.yPos = (ofGetWindowHeight()/2) + (height/2);
+
+    firstLine.fColor = ofColor(255, 0, 0, 255);
+    firstLine.bColor = ofColor(255, 255, 255, 255);
+
+    firstLine.startTime = 0;
+    firstLine.duration = 1 * 1000;
+    firstLine.delta = 1 * 1000;
+    firstLine.fade = false;
+    addToSequence(firstLine, sequence);
+
+
+
     sqlite = new ofxSQLite(databaseLocation); 
 
     // Ensure that the settings are saved
     settings.setValue("settings:databaseLocation", databaseLocation);
     settings.saveFile(settingsFilename);
 
-    // Get first random selection from database
-    selectRandomCode(currentCode);
-    addCodeToSequence(currentCode);
+    // Update our random code
+    updateRandomCode();
 
     currentTextLine = sequence.at(currentSequenceIndex);
     font.setSize(currentTextLine.fontSize);
 
-//    ofRectangle rect = font.getStringBoundingBox(currentTextLine.text, 0, 0);
-//    float width = rect.width;
-//    float height = rect.height;
-//    ofLog(OF_LOG_NOTICE, ofToString(width));
-//    ofLog(OF_LOG_NOTICE, ofToString(height));
-
-    //sequence.at(currentSequenceIndex).xPos = (ofGetWindowWidth()/2) - (width/2);
-    //sequence.at(currentSequenceIndex).yPos = (ofGetWindowHeight()/2) + (height/2);
-
-
-    
     ofLog(OF_LOG_NOTICE, "Starting sylloge of codes...");
     setLastTime(sequence);
     
     ofResetElapsedTimeCounter();
-    ofLog(OF_LOG_NOTICE, "Sequence size at end of setup: " + ofToString(sequence.size()));
+    //ofLog(OF_LOG_NOTICE, "Sequence size at end of setup: " + ofToString(sequence.size()));
 }
 
 void sylloge_of_codes::addToSequence(TextLine& textLine, vector<TextLine>& sequence) {
@@ -120,11 +130,12 @@ void sylloge_of_codes::addToSequence(TextLine& textLine, vector<TextLine>& seque
 }
 
 void sylloge_of_codes::selectRandomCode(Sylloge& code) {
-    setSyllogeCount();
-    srand(time(0));
-    int index = 1 + rand() % syllogeCount;
+    float val = ofRandom(enabledIDs.size());
+    int index = floor(val);
+    //ofLog(OF_LOG_NOTICE, "rand val: " + ofToString(val));
+    //ofLog(OF_LOG_NOTICE, "Selected index: " + ofToString(index));
 
-    ofxSQLiteSelect sel = sqlite->select("id, code, comments, pseudonym, code_date, enabled").from("sylloge").where("id", 46);
+    ofxSQLiteSelect sel = sqlite->select("id, code, comments, pseudonym, code_date, enabled").from("sylloge").where("id", enabledIDs.at(index));
     sel.execute().begin();
 
     while (sel.hasNext()) {
@@ -140,29 +151,38 @@ void sylloge_of_codes::selectRandomCode(Sylloge& code) {
 
 }
 
-float sylloge_of_codes::centerX(float stringWidth) {
-    float textCenter = stringWidth / 2.0f;
+void sylloge_of_codes::updateRandomCode() {
+    //ofLog(OF_LOG_NOTICE, "before enabled");
+    setSyllogeEnabled();
+    //ofLog(OF_LOG_NOTICE, "after enabled");
+    
+    if (enabledIDs.size() != 0) {
+        selectRandomCode(currentCode);
+        addCodeToSequence(currentCode);
+    }
 
-    //return (ofGetWindowWidth()/2 - textCenter);
-    return (ofGetWindowWidth()/2 - textCenter);
+    setLastTime(sequence);
+    //ofLog(OF_LOG_NOTICE, "at end of update");
+
 }
 
-float sylloge_of_codes::centerY(float stringHeight) {
-    //float textCenter = stringHeight/ 2.0f;
+void sylloge_of_codes::setSyllogeEnabled() {
+    enabledIDs.clear();
+    ofxSQLiteSelect sel = sqlite->select("id").from("sylloge").where("enabled", "1").execute().begin();
 
-    return (ofGetWindowHeight()/2);
-}
+    while (sel.hasNext()) {
+        int id = sel.getInt();
+        enabledIDs.push_back(id);
+        sel.next();
+    }
 
-void sylloge_of_codes::setSyllogeCount() {
-    ofxSQLiteSelect sel = sqlite->select("count(*) as total").from("sylloge");
-    sel.execute().begin();
-    syllogeCount = sel.getInt();
+    ofLog(OF_LOG_NOTICE, ofToString(enabledIDs));
 }
 
 //--------------------------------------------------------------
 void sylloge_of_codes::update(){
     unsigned long long currentTime = ofGetElapsedTimeMillis();
-
+    
     currentTextLine = sequence.at(currentSequenceIndex);
     float startTime = currentTextLine.startTime;
     float duration = currentTextLine.duration;
@@ -182,6 +202,8 @@ void sylloge_of_codes::update(){
     } else if (currentTime >= (startTime + duration + delta)) {
         currentSequenceIndex += 1;
         
+        ofLog(OF_LOG_NOTICE, "in end of delta section");
+        ofLog(OF_LOG_NOTICE, "currentSequenceIndex: " + ofToString(currentSequenceIndex));
         if (currentSequenceIndex != sequence.size()) {
             currentTextLine = sequence.at(currentSequenceIndex);
             font.setSize(currentTextLine.fontSize);
@@ -201,15 +223,17 @@ void sylloge_of_codes::update(){
 
 
 void sylloge_of_codes::setLastTime(vector<TextLine>& sequence) {
-    ofLog(OF_LOG_NOTICE, "sequence size in setLastTime: " + ofToString(sequence.size()));
+    ofLog(OF_LOG_NOTICE, "SETTING LAST TIME");
+    ofLog(OF_LOG_NOTICE, "SEQUENCE SIZE: " + ofToString(sequence.size()));
     TextLine lastLine = sequence.at(sequence.size() - 1);
+    ofLog(OF_LOG_NOTICE, "AFTER AT");
 
     lastTime = (unsigned long long) (lastLine.startTime + lastLine.duration + lastLine.delta);
-    ofLog(OF_LOG_NOTICE, "lastTime is: " + ofToString(lastTime));
 }
 
 void sylloge_of_codes::segmentFadeIn(vector<TextLine>& sequence, int index) {
     TextLine current;
+
     current = sequence.at(index);
 #ifdef FTGLES
     font.setColor(current.fColor.r, current.fColor.g, current.fColor.b, current.currentAlpha);
@@ -247,18 +271,12 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
 
     // Replace newlines with pilcrow, as it's eaiser than counting lines, etc.
     Poco::replaceInPlace(code.code, "\n", " \u00b6 ");
-    //replace(code.code.begin(), code.code.end(), '\n', "¶");
     vector<string> words;
     istringstream iss(code.code);
     copy(istream_iterator<string>(iss),
         istream_iterator<string>(),
         back_inserter(words)); 
     
-    /*
-    for (int i = 0; i < words.size(); i++) {
-        ofLog(OF_LOG_NOTICE, words.at(i));
-    }
-    */
 
     // Okay, let's start combining our words together again into appropriately lengthed paragraphs
     // TODO
@@ -280,6 +298,7 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
             if (runningChars <= maxChars) {
                 currentWords.push_back(words.at(i));
             } else {
+                currentWords.push_back("\u2192");
                 imploded.clear();
                 imploded.str("");
                 copy(currentWords.begin(), currentWords.end(), ostream_iterator<string>(imploded, delim));
@@ -302,7 +321,6 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
 
     for (int i = 0; i < currentFragments.size(); i++) {
         dbText.fontSize = standardFontSize;
-        //ofLog(OF_LOG_NOTICE, currentFragments.at(i));
 
         // Annoying for string processing, but this is how it works...
         ostringstream oStringStream;
@@ -313,21 +331,6 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
         dbText.yPos = 80;
 
         font.setSize(dbText.fontSize);
-        ofRectangle rect = font.getStringBoundingBox(dbText.text, dbText.xPos, dbText.yPos);
-        rect.standardize();
-        float rectHeight = abs(rect.y) + abs(rect.height);
-
-        // FUDGE FACTOR BELOW!
-        /*
-        if ((rectHeight > (ofGetWindowHeight() - 2 * dbText.yPos)) || (rectHeight == dbText.yPos)) {
-            ofLog(OF_LOG_NOTICE, "TOO HIGH");
-            // If too high, scale font size a bit
-            dbText.fontSize = 0.9 * dbText.fontSize;
-        }
-        */
-        ofLog(OF_LOG_NOTICE, ofToString(rect));
-        ofLog(OF_LOG_NOTICE, ofToString(rectHeight));
-
         dbText.text = completeText;
         addToSequence(dbText, sequence);
     }
@@ -348,16 +351,12 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
         textLine.fontSize = textLines.getValue("fontSize", 48.0);
         const char *line = textLines.getValue("text", "").c_str();
         textLine.text = gettext(line);
-        textLine.xPos = centerX(font.stringWidth(textLine.text));
-        textLine.yPos = centerY(font.stringHeight(textLine.text));
 
         font.setSize(textLine.fontSize);
         ofRectangle rect = font.getStringBoundingBox(textLine.text, 0, 0);
             
         float width = rect.width;
         float height = rect.height;
-        ofLog(OF_LOG_NOTICE, ofToString(width));
-        ofLog(OF_LOG_NOTICE, ofToString(height));
     
         textLine.xPos = (ofGetWindowWidth()/2) - (width/2);
         textLine.yPos = (ofGetWindowHeight()/2) + (height/2);
@@ -384,21 +383,23 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
 }
 
 void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
-    ofLog(OF_LOG_NOTICE, "in reset sequence");
-    ofLog(OF_LOG_NOTICE, "Sequence size before pop: " + ofToString(sequence.size()));
-    ofLog(OF_LOG_NOTICE, "codeFragmentsAdded: " + ofToString(codeFragmentsAdded));
+    ofLog(OF_LOG_NOTICE, "IN RESET SEQUENCE");
+    ofLog(OF_LOG_NOTICE, "CODE FRAGMENTS ADDED: " + ofToString(codeFragmentsAdded));
+    //ofLog(OF_LOG_NOTICE, "Sequence size before pop: " + ofToString(sequence.size()));
+    //ofLog(OF_LOG_NOTICE, "codeFragmentsAdded: " + ofToString(codeFragmentsAdded));
 
     // Pop the random code fragments added
     for (int i = 0; i < codeFragmentsAdded; i++) {
         sequence.pop_back();
     }
+    
+    // Reset code fragments for corner case of nothing enabled.
+    codeFragmentsAdded = 0;
 
-    ofLog(OF_LOG_NOTICE, "Sequence size after erase: " + ofToString(sequence.size()));
+    //ofLog(OF_LOG_NOTICE, "Sequence size after erase: " + ofToString(sequence.size()));
 
     // Add new random code, update last time
-    selectRandomCode(currentCode);
-    addCodeToSequence(currentCode);
-    setLastTime(sequence);
+    updateRandomCode();
 
     // Ensure that the font size is correct for the first line
     font.setSize(sequence.at(0).fontSize);
@@ -414,7 +415,9 @@ void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
 
 //--------------------------------------------------------------
 void sylloge_of_codes::draw() {
-
+    ofLog(OF_LOG_NOTICE, "Before draw .at with currentSequenceIndex: " + ofToString(currentSequenceIndex));
+    ofLog(OF_LOG_NOTICE, "sequence.size(): " + ofToString(sequence.size()));
+    ofLog(OF_LOG_NOTICE, "lastTime: " + ofToString(lastTime));
     currentTextLine = sequence.at(currentSequenceIndex);
 
     if (drawNow) {
@@ -484,5 +487,3 @@ void sylloge_of_codes::gotMessage(ofMessage msg){
 void sylloge_of_codes::dragEvent(ofDragInfo dragInfo){
 
 }
-
-

@@ -1,19 +1,5 @@
 <lines xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="sylloge_of_codes">
     <line>
-        <text i18n:translate="">sylloge of codes</text>
-        <duration>10.00</duration>
-        <delta>5.0</delta>
-        <fRed>255</fRed>
-        <fGreen>0</fGreen>
-        <fBlue>0</fBlue>
-        <bRed>255</bRed>
-        <bGreen>255</bGreen>
-        <bBlue>255</bBlue>
-        <font>SourceSansPro-Black.otf</font>
-        <fontSize>100.0</fontSize>
-    </line>
-
-    <line>
         <text i18n:translate="">Hello friends</text>
         <duration>5.00</duration>
         <delta>3.0</delta>

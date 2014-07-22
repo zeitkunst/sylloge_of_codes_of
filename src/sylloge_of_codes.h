@@ -94,7 +94,7 @@ class sylloge_of_codes : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-        void setSyllogeCount();
+        void setSyllogeEnabled();
 
         void setCompleteText(char* text);
 		
@@ -124,13 +124,12 @@ class sylloge_of_codes : public ofBaseApp{
         Sylloge currentCode;
         int currentSequenceIndex;
         float alpha;
-        float centerX(float stringWidth);
-        float centerY(float stringHeight);
         void addToSequence(TextLine& textLine, vector<TextLine>& sequence);
         void segmentFadeIn(vector<TextLine>& sequence, int index);
         void resetSequence(vector<TextLine>& sequence);
         void selectRandomCode(Sylloge& currentCode);
         void addCodeToSequence(Sylloge& code);
+        void updateRandomCode();
         void loadTextLines(vector<TextLine>& sequence);
         void setLastTime(vector<TextLine>& sequence);
     private:
@@ -159,6 +158,7 @@ class sylloge_of_codes : public ofBaseApp{
         bool drawNow;
         unsigned long long lastTime;
         unsigned int codeFragmentsAdded;
+        vector<int> enabledIDs;
 
 };
 

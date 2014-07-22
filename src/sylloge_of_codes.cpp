@@ -75,8 +75,6 @@ void sylloge_of_codes::setup(){
             
     float width = rect.width;
     float height = rect.height;
-    //ofLog(OF_LOG_NOTICE, ofToString(width));
-    //ofLog(OF_LOG_NOTICE, ofToString(height));
     
     firstLine.xPos = (ofGetWindowWidth()/2) - (width/2);
     firstLine.yPos = (ofGetWindowHeight()/2) + (height/2);
@@ -108,7 +106,6 @@ void sylloge_of_codes::setup(){
     setLastTime(sequence);
     
     ofResetElapsedTimeCounter();
-    //ofLog(OF_LOG_NOTICE, "Sequence size at end of setup: " + ofToString(sequence.size()));
 }
 
 void sylloge_of_codes::addToSequence(TextLine& textLine, vector<TextLine>& sequence) {
@@ -132,8 +129,6 @@ void sylloge_of_codes::addToSequence(TextLine& textLine, vector<TextLine>& seque
 void sylloge_of_codes::selectRandomCode(Sylloge& code) {
     float val = ofRandom(enabledIDs.size());
     int index = floor(val);
-    //ofLog(OF_LOG_NOTICE, "rand val: " + ofToString(val));
-    //ofLog(OF_LOG_NOTICE, "Selected index: " + ofToString(index));
 
     ofxSQLiteSelect sel = sqlite->select("id, code, comments, pseudonym, code_date, enabled").from("sylloge").where("id", enabledIDs.at(index));
     sel.execute().begin();
@@ -152,9 +147,7 @@ void sylloge_of_codes::selectRandomCode(Sylloge& code) {
 }
 
 void sylloge_of_codes::updateRandomCode() {
-    //ofLog(OF_LOG_NOTICE, "before enabled");
     setSyllogeEnabled();
-    //ofLog(OF_LOG_NOTICE, "after enabled");
     
     if (enabledIDs.size() != 0) {
         selectRandomCode(currentCode);
@@ -162,7 +155,6 @@ void sylloge_of_codes::updateRandomCode() {
     }
 
     setLastTime(sequence);
-    //ofLog(OF_LOG_NOTICE, "at end of update");
 
 }
 
@@ -176,7 +168,6 @@ void sylloge_of_codes::setSyllogeEnabled() {
         sel.next();
     }
 
-    ofLog(OF_LOG_NOTICE, ofToString(enabledIDs));
 }
 
 //--------------------------------------------------------------
@@ -202,8 +193,6 @@ void sylloge_of_codes::update(){
     } else if (currentTime >= (startTime + duration + delta)) {
         currentSequenceIndex += 1;
         
-        ofLog(OF_LOG_NOTICE, "in end of delta section");
-        ofLog(OF_LOG_NOTICE, "currentSequenceIndex: " + ofToString(currentSequenceIndex));
         if (currentSequenceIndex != sequence.size()) {
             currentTextLine = sequence.at(currentSequenceIndex);
             font.setSize(currentTextLine.fontSize);
@@ -223,10 +212,7 @@ void sylloge_of_codes::update(){
 
 
 void sylloge_of_codes::setLastTime(vector<TextLine>& sequence) {
-    ofLog(OF_LOG_NOTICE, "SETTING LAST TIME");
-    ofLog(OF_LOG_NOTICE, "SEQUENCE SIZE: " + ofToString(sequence.size()));
     TextLine lastLine = sequence.at(sequence.size() - 1);
-    ofLog(OF_LOG_NOTICE, "AFTER AT");
 
     lastTime = (unsigned long long) (lastLine.startTime + lastLine.duration + lastLine.delta);
 }
@@ -383,11 +369,6 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
 }
 
 void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
-    ofLog(OF_LOG_NOTICE, "IN RESET SEQUENCE");
-    ofLog(OF_LOG_NOTICE, "CODE FRAGMENTS ADDED: " + ofToString(codeFragmentsAdded));
-    //ofLog(OF_LOG_NOTICE, "Sequence size before pop: " + ofToString(sequence.size()));
-    //ofLog(OF_LOG_NOTICE, "codeFragmentsAdded: " + ofToString(codeFragmentsAdded));
-
     // Pop the random code fragments added
     for (int i = 0; i < codeFragmentsAdded; i++) {
         sequence.pop_back();
@@ -395,8 +376,6 @@ void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
     
     // Reset code fragments for corner case of nothing enabled.
     codeFragmentsAdded = 0;
-
-    //ofLog(OF_LOG_NOTICE, "Sequence size after erase: " + ofToString(sequence.size()));
 
     // Add new random code, update last time
     updateRandomCode();
@@ -415,9 +394,6 @@ void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
 
 //--------------------------------------------------------------
 void sylloge_of_codes::draw() {
-    ofLog(OF_LOG_NOTICE, "Before draw .at with currentSequenceIndex: " + ofToString(currentSequenceIndex));
-    ofLog(OF_LOG_NOTICE, "sequence.size(): " + ofToString(sequence.size()));
-    ofLog(OF_LOG_NOTICE, "lastTime: " + ofToString(lastTime));
     currentTextLine = sequence.at(currentSequenceIndex);
 
     if (drawNow) {

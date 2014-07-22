@@ -1,4 +1,9 @@
+#include <sstream>
+#include <iostream>
+
 #include "sylloge_of_codes.h"
+
+using namespace std;
 
 //--------------------------------------------------------------
 void sylloge_of_codes::setup(){
@@ -14,14 +19,15 @@ void sylloge_of_codes::setup(){
     // Setup settings filenames
     const string settingsFilename = "sylloge_of_codes_settings.xml";
     const string textLinesFilename = "textLines.xml";
-    skipIntro = false;
 
     // Misc setup
     frameRate = 30;
     drawNow = false;
     currentSequenceIndex = 0;
-    loopCounter = 0;
+    loopCounter = 1;
     syllogeDebug = SYLLOGE_DEBUG;
+    skipIntro = true;
+    codeFragmentsAdded = 0;
 
 	ofBackground(255,255,255);
     ofSetFrameRate(frameRate);
@@ -87,26 +93,7 @@ void sylloge_of_codes::setup(){
 
     // Get first random selection from database
     selectRandomCode(currentCode);
-
-    // Annoying for string processing, but this is how it works...
-    std::ostringstream stringStream;
-    stringStream << DateTimeFormatter::format(currentCode.code_dt.timestamp(), "%W, %e %B %Y") << "\n" << currentCode.pseudonym << "\n" << currentCode.code;
-    completeText = stringStream.str();
-
-    // Setup random selection segment
-    TextLine dbText;
-    dbText.text = completeText;
-    dbText.font = "SourceSansPro-Black.otf";
-    dbText.fontSize = 30.0;
-    dbText.fColor = ofColor(255.0, 0.0, 0.0);
-    dbText.bColor = ofColor(255.0, 255.0, 255.0);
-    dbText.startTime = 0.0;
-    dbText.delta = 3.0;
-    dbText.duration = 25.0;
-    dbText.fade = false;
-    dbText.xPos = 0.25 * ofGetWidth();
-    dbText.yPos = 10;
-    addToSequence(dbText, sequence);
+    addCodeToSequence(currentCode);
 
     currentTextLine = sequence.at(currentSequenceIndex);
     font.setSize(currentTextLine.fontSize);
@@ -126,6 +113,7 @@ void sylloge_of_codes::setup(){
     setLastTime(sequence);
     
     ofResetElapsedTimeCounter();
+    ofLog(OF_LOG_NOTICE, "Sequence size at end of setup: " + ofToString(sequence.size()));
 }
 
 void sylloge_of_codes::addToSequence(TextLine& textLine, vector<TextLine>& sequence) {
@@ -191,7 +179,7 @@ void sylloge_of_codes::setSyllogeCount() {
 
 //--------------------------------------------------------------
 void sylloge_of_codes::update(){
-    int currentFrame = ofGetFrameNum();
+    unsigned int currentFrame = ofGetFrameNum();
 
     currentTextLine = sequence.at(currentSequenceIndex);
     float startTime = currentTextLine.startTime;
@@ -211,20 +199,25 @@ void sylloge_of_codes::update(){
         drawNow = false;
     } else if (currentFrame >= (startTime + duration + delta)) {
         currentSequenceIndex += 1;
-        currentTextLine = sequence.at(currentSequenceIndex);
-        font.setSize(currentTextLine.fontSize);
-        ofRectangle rect = font.getStringBoundingBox(currentTextLine.text, 0, 0);
         
-        float width = rect.width;
-        float height = rect.height;
-        ofLog(OF_LOG_NOTICE, ofToString(width));
-        ofLog(OF_LOG_NOTICE, ofToString(height));
+        if (currentSequenceIndex != sequence.size()) {
+            currentTextLine = sequence.at(currentSequenceIndex);
+            font.setSize(currentTextLine.fontSize);
+            ofRectangle rect = font.getStringBoundingBox(currentTextLine.text, 0, 0);
+            
+            float width = rect.width;
+            float height = rect.height;
+            ofLog(OF_LOG_NOTICE, ofToString(width));
+            ofLog(OF_LOG_NOTICE, ofToString(height));
+    
+            sequence.at(currentSequenceIndex).xPos = (ofGetWindowWidth()/2) - (width/2);
+            sequence.at(currentSequenceIndex).yPos = (ofGetWindowHeight()/2) + (height/2);
+        }
 
-        sequence.at(currentSequenceIndex).xPos = (ofGetWindowWidth()/2) - (width/2);
-        sequence.at(currentSequenceIndex).yPos = (ofGetWindowHeight()/2) + (height/2);
 
-
-    } else if (currentFrame >= lastTime) {
+    } 
+    
+    if (currentFrame >= lastTime) {
         currentSequenceIndex = 0;
         ofResetElapsedTimeCounter();
         resetSequence(sequence);
@@ -234,9 +227,11 @@ void sylloge_of_codes::update(){
 
 
 void sylloge_of_codes::setLastTime(vector<TextLine>& sequence) {
+    ofLog(OF_LOG_NOTICE, "sequence size in setLastTime: " + ofToString(sequence.size()));
     TextLine lastLine = sequence.at(sequence.size() - 1);
 
     lastTime = (unsigned long long) (lastLine.startTime + lastLine.duration + lastLine.delta);
+    ofLog(OF_LOG_NOTICE, "lastTime is: " + ofToString(lastTime));
 }
 
 void sylloge_of_codes::segmentFadeIn(vector<TextLine>& sequence, int index) {
@@ -248,6 +243,110 @@ void sylloge_of_codes::segmentFadeIn(vector<TextLine>& sequence, int index) {
     ofSetColor(current.fColor.r, current.fColor.g, current.fColor.b, current.currentAlpha);
 #endif
     sequence.at(index).currentAlpha = ofLerp(sequence.at(index).currentAlpha, 255, 0.08);
+}
+
+void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
+    string completeText;
+
+    // Setup all of our properties, except for the text
+    TextLine dbText;
+    dbText.font = "SourceSansPro-Black.otf";
+    dbText.fontSize = 30.0;
+    dbText.fColor = ofColor(255.0, 0.0, 0.0);
+    dbText.bColor = ofColor(255.0, 255.0, 255.0);
+    dbText.startTime = 0.0;
+    dbText.delta = floor(1.0 * frameRate);;
+    dbText.duration = floor(1.0 * frameRate);
+    dbText.fade = false;
+
+    // Set the font to be the correct size
+    font.setSize(dbText.fontSize);
+
+    // Vector of our appropriately sized lines
+    vector<string> outputLines;
+    outputLines.push_back(DateTimeFormatter::format(code.code_dt.timestamp(), "%W, %e %B %Y"));
+    outputLines.push_back(code.pseudonym);
+
+    /*
+    StringTokenizer st(code.code, "\n");
+
+    for (int i = 0; i < st.count(); i++) {
+        ofLog(OF_LOG_NOTICE, st[i]);
+    }
+    */
+  
+    // Split by space
+    // from http://stackoverflow.com/questions/19137617/c-function-split-string-into-words 
+    vector<string> words;
+    istringstream iss(code.code);
+    copy(istream_iterator<string>(iss),
+        istream_iterator<string>(),
+        back_inserter(words)); 
+    
+    /*
+    for (int i = 0; i < words.size(); i++) {
+        ofLog(OF_LOG_NOTICE, words.at(i));
+    }
+    */
+
+    // Okay, let's start combining our words together again into appropriately lengthed paragraphs
+    // TODO
+    // Still have to deal with newlines in the input text
+    vector<string> currentWords;
+    vector<string> currentParagraphs;
+
+    if (words.size() > 0) {
+        int runningChars = 0;
+        currentWords.clear();
+        currentParagraphs.clear();
+        const char* const delim = " ";
+        ostringstream imploded;
+
+        int maxChars = 300; 
+        for(int i = 0; i < words.size(); i++) {
+            runningChars += words.at(i).size() + 1;
+
+            if (runningChars <= maxChars) {
+                currentWords.push_back(words.at(i));
+            } else {
+                imploded.clear();
+                imploded.str("");
+                copy(currentWords.begin(), currentWords.end(), ostream_iterator<string>(imploded, delim));
+                currentParagraphs.push_back(imploded.str());
+
+                currentWords.clear();
+                currentWords.push_back(words.at(i));
+
+                runningChars = 0;
+            }
+            
+        }
+
+        // last line
+        imploded.clear();
+        imploded.str("");
+        copy(currentWords.begin(), currentWords.end(), ostream_iterator<string>(imploded, delim));
+        currentParagraphs.push_back(imploded.str());
+    }
+
+    for (int i = 0; i < currentParagraphs.size(); i++) {
+        //ofLog(OF_LOG_NOTICE, currentParagraphs.at(i));
+
+        // Annoying for string processing, but this is how it works...
+        ostringstream oStringStream;
+        oStringStream << DateTimeFormatter::format(code.code_dt.timestamp(), "%W, %e %B %Y") << "\n" << code.pseudonym << "\n" << currentParagraphs.at(i);
+        completeText = oStringStream.str();
+    
+        //dbText.xPos = 0.25 * ofGetWidth();
+        //dbText.yPos = 10;
+        dbText.text = completeText;
+        addToSequence(dbText, sequence);
+
+    }
+
+    codeFragmentsAdded = sequence.size();
+
+
 }
 
 void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
@@ -286,15 +385,18 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
 }
 
 void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
+    ofLog(OF_LOG_NOTICE, "in reset sequence");
     // Reset the randomly chosen code
     // TODO
     // Make the match the number of opening segments (which is right now only one)
-    sequence.erase(sequence.begin() + sequence.size() - 1, sequence.begin() + sequence.size());
-    //loadTextLines(sequence);
+    sequence.erase(sequence.begin() + sequence.size() - codeFragmentsAdded, sequence.begin() + sequence.size());
+    ofLog(OF_LOG_NOTICE, "Sequence size after erase: " + ofToString(sequence.size()));
+
     // TODO
     // Ensure that we also add the selected random code to the sequence
     // Also ensure that it's the appropriate number of lines
     selectRandomCode(currentCode);
+    addCodeToSequence(currentCode);
     setLastTime(sequence);
 
     // Reset the fades
@@ -308,6 +410,16 @@ void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
 
 //--------------------------------------------------------------
 void sylloge_of_codes::draw() {
+    if (syllogeDebug) {
+        ofSetColor(0, 0, 0, 255);
+        elapsedTimeString = "Elapsed time: " + ofToString(ofGetElapsedTimef());
+        ofDrawBitmapString(elapsedTimeString, 10, 10);
+        fpsString = "frame rate: "+ ofToString(ofGetFrameRate(), 2);
+        ofDrawBitmapString(fpsString, 10, 30);
+        loopCounterString = "Loop count: "+ ofToString(loopCounter);
+        ofDrawBitmapString(loopCounterString, 10, 50);
+    }
+
     currentTextLine = sequence.at(currentSequenceIndex);
 
     if (drawNow) {
@@ -320,16 +432,6 @@ void sylloge_of_codes::draw() {
         ofSetColor(currentTextLine.fColor.r, currentTextLine.fColor.g, currentTextLine.fColor.b, currentTextLine.currentAlpha);
 #endif
         font.drawString(currentTextLine.text, currentTextLine.xPos, currentTextLine.yPos);
-    }
-
-    if (syllogeDebug) {
-        ofSetColor(0, 0, 0, 255);
-        elapsedTimeString = "Elapsed time: " + ofToString(ofGetElapsedTimef());
-        ofDrawBitmapString(elapsedTimeString, 10, 10);
-        fpsString = "frame rate: "+ ofToString(ofGetFrameRate(), 2);
-        ofDrawBitmapString(fpsString, 10, 30);
-        loopCounterString = "Loop count: "+ ofToString(loopCounter);
-        ofDrawBitmapString(loopCounterString, 10, 50);
     }
 
 }

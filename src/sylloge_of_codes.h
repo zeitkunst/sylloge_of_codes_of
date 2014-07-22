@@ -13,6 +13,7 @@
 #include <Poco/DateTimeFormatter.h>
 #include <Poco/DateTimeFormat.h>
 #include <Poco/DateTimeParser.h>
+#include <Poco/StringTokenizer.h>
 
 #include "ofMain.h"
 #include "ofxSQLiteHeaders.h"
@@ -34,6 +35,7 @@ using Poco::Timezone;
 using Poco::DateTimeFormatter;
 using Poco::DateTimeFormat;
 using Poco::DateTimeParser;
+using Poco::StringTokenizer;
 using std::vector;
 
 struct Sylloge {
@@ -100,9 +102,6 @@ class sylloge_of_codes : public ofBaseApp{
 		ofTTFCharacter testChar;
 		char letter;
 
-        // Strings for overall text
-        std::string completeText;
-
         // Text offset in pixels
         static const int offset = 15;
 
@@ -130,6 +129,7 @@ class sylloge_of_codes : public ofBaseApp{
         void segmentFadeIn(vector<TextLine>& sequence, int index);
         void resetSequence(vector<TextLine>& sequence);
         void selectRandomCode(Sylloge& currentCode);
+        void addCodeToSequence(Sylloge& code);
         void loadTextLines(vector<TextLine>& sequence);
         void setLastTime(vector<TextLine>& sequence);
     private:
@@ -154,9 +154,10 @@ class sylloge_of_codes : public ofBaseApp{
         vector<string> textFragments;
         bool skipIntro;
         TextLine currentTextLine;
-        unsigned int frameRate;
+        unsigned long long frameRate;
         bool drawNow;
         unsigned long long lastTime;
+        unsigned int codeFragmentsAdded;
 
 };
 

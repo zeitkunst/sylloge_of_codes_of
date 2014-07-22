@@ -1,5 +1,8 @@
 #include <sstream>
 #include <iostream>
+#include <iterator>
+#include <cmath>
+#include <algorithm>
 
 #include "sylloge_of_codes.h"
 
@@ -26,7 +29,7 @@ void sylloge_of_codes::setup(){
     currentSequenceIndex = 0;
     loopCounter = 1;
     syllogeDebug = SYLLOGE_DEBUG;
-    skipIntro = false;
+    skipIntro = true;
     codeFragmentsAdded = 0;
 
 	ofBackground(255,255,255);
@@ -79,12 +82,12 @@ void sylloge_of_codes::setup(){
 
     currentTextLine = sequence.at(currentSequenceIndex);
     font.setSize(currentTextLine.fontSize);
-    ofRectangle rect = font.getStringBoundingBox(currentTextLine.text, 0, 0);
-    
-    float width = rect.width;
-    float height = rect.height;
-    ofLog(OF_LOG_NOTICE, ofToString(width));
-    ofLog(OF_LOG_NOTICE, ofToString(height));
+
+//    ofRectangle rect = font.getStringBoundingBox(currentTextLine.text, 0, 0);
+//    float width = rect.width;
+//    float height = rect.height;
+//    ofLog(OF_LOG_NOTICE, ofToString(width));
+//    ofLog(OF_LOG_NOTICE, ofToString(height));
 
     //sequence.at(currentSequenceIndex).xPos = (ofGetWindowWidth()/2) - (width/2);
     //sequence.at(currentSequenceIndex).yPos = (ofGetWindowHeight()/2) + (height/2);
@@ -220,9 +223,10 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
     string completeText;
 
     // Setup all of our properties, except for the text
+    float standardFontSize = 30.0;
     TextLine dbText;
     dbText.font = "SourceSansPro-Black.otf";
-    dbText.fontSize = 30.0;
+    dbText.fontSize = standardFontSize;
     dbText.fColor = ofColor(255.0, 0.0, 0.0);
     dbText.bColor = ofColor(255.0, 255.0, 255.0);
     dbText.startTime = 0;
@@ -238,16 +242,12 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
     outputLines.push_back(DateTimeFormatter::format(code.code_dt.timestamp(), "%W, %e %B %Y"));
     outputLines.push_back(code.pseudonym);
 
-    /*
-    StringTokenizer st(code.code, "\n");
-
-    for (int i = 0; i < st.count(); i++) {
-        ofLog(OF_LOG_NOTICE, st[i]);
-    }
-    */
-  
     // Split by space
     // from http://stackoverflow.com/questions/19137617/c-function-split-string-into-words 
+
+    // Replace newlines with pilcrow, as it's eaiser than counting lines, etc.
+    Poco::replaceInPlace(code.code, "\n", " \u00b6 ");
+    //replace(code.code.begin(), code.code.end(), '\n', "¶");
     vector<string> words;
     istringstream iss(code.code);
     copy(istream_iterator<string>(iss),
@@ -264,16 +264,16 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
     // TODO
     // Still have to deal with newlines in the input text
     vector<string> currentWords;
-    vector<string> currentParagraphs;
+    vector<string> currentFragments;
 
     if (words.size() > 0) {
         int runningChars = 0;
         currentWords.clear();
-        currentParagraphs.clear();
+        currentFragments.clear();
         const char* const delim = " ";
         ostringstream imploded;
 
-        int maxChars = 300; 
+        int maxChars = 600; 
         for(int i = 0; i < words.size(); i++) {
             runningChars += words.at(i).size() + 1;
 
@@ -283,7 +283,7 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
                 imploded.clear();
                 imploded.str("");
                 copy(currentWords.begin(), currentWords.end(), ostream_iterator<string>(imploded, delim));
-                currentParagraphs.push_back(imploded.str());
+                currentFragments.push_back(imploded.str());
 
                 currentWords.clear();
                 currentWords.push_back(words.at(i));
@@ -297,40 +297,42 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
         imploded.clear();
         imploded.str("");
         copy(currentWords.begin(), currentWords.end(), ostream_iterator<string>(imploded, delim));
-        currentParagraphs.push_back(imploded.str());
+        currentFragments.push_back(imploded.str());
     }
 
-    for (int i = 0; i < currentParagraphs.size(); i++) {
-        //ofLog(OF_LOG_NOTICE, currentParagraphs.at(i));
+    for (int i = 0; i < currentFragments.size(); i++) {
+        dbText.fontSize = standardFontSize;
+        //ofLog(OF_LOG_NOTICE, currentFragments.at(i));
 
         // Annoying for string processing, but this is how it works...
         ostringstream oStringStream;
-        oStringStream << DateTimeFormatter::format(code.code_dt.timestamp(), "%W, %e %B %Y") << "\n" << code.pseudonym << "\n" << currentParagraphs.at(i);
+        oStringStream << DateTimeFormatter::format(code.code_dt.timestamp(), "%W, %e %B %Y") << "\n \n" << "Contributed by " << code.pseudonym << "\n \n" << currentFragments.at(i);
         completeText = oStringStream.str();
-    
-        //dbText.xPos = 0.25 * ofGetWidth();
-        //dbText.yPos = 50;
-
-        font.setSize(dbText.fontSize);
-        ofRectangle rect = font.getStringBoundingBox(dbText.text, 0, 0);
-            
-        float width = rect.width;
-        float height = rect.height;
-        ofLog(OF_LOG_NOTICE, ofToString(width));
-        ofLog(OF_LOG_NOTICE, ofToString(height));
     
         dbText.xPos = 80;
         dbText.yPos = 80;
 
+        font.setSize(dbText.fontSize);
+        ofRectangle rect = font.getStringBoundingBox(dbText.text, dbText.xPos, dbText.yPos);
+        rect.standardize();
+        float rectHeight = abs(rect.y) + abs(rect.height);
+
+        // FUDGE FACTOR BELOW!
+        /*
+        if ((rectHeight > (ofGetWindowHeight() - 2 * dbText.yPos)) || (rectHeight == dbText.yPos)) {
+            ofLog(OF_LOG_NOTICE, "TOO HIGH");
+            // If too high, scale font size a bit
+            dbText.fontSize = 0.9 * dbText.fontSize;
+        }
+        */
+        ofLog(OF_LOG_NOTICE, ofToString(rect));
+        ofLog(OF_LOG_NOTICE, ofToString(rectHeight));
 
         dbText.text = completeText;
         addToSequence(dbText, sequence);
-
     }
 
-    codeFragmentsAdded = currentParagraphs.size();
-
-
+    codeFragmentsAdded = currentFragments.size();
 }
 
 void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {

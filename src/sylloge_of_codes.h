@@ -13,6 +13,7 @@
 #include <Poco/DateTimeFormatter.h>
 #include <Poco/DateTimeFormat.h>
 #include <Poco/DateTimeParser.h>
+#include <Poco/String.h>
 #include <Poco/StringTokenizer.h>
 
 #include "ofMain.h"

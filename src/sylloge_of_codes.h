@@ -131,6 +131,7 @@ class sylloge_of_codes : public ofBaseApp{
         void resetSequence(vector<TextLine>& sequence);
         void selectRandomCode(Sylloge& currentCode);
         void loadTextLines(vector<TextLine>& sequence);
+        void setLastTime(vector<TextLine>& sequence);
     private:
 #ifdef FTGLES
         //ofxFTGLESFont font;
@@ -152,6 +153,10 @@ class sylloge_of_codes : public ofBaseApp{
         vector<TextLine> sequence;
         vector<string> textFragments;
         bool skipIntro;
+        TextLine currentTextLine;
+        unsigned int frameRate;
+        bool drawNow;
+        unsigned long long lastTime;
 
 };
 

@@ -7,7 +7,7 @@ void sylloge_of_codes::setup(){
     font.loadFont("SourceSansPro-Black.otf", 36, true, true);        
     font.setLineLength(0.8 * ofGetWindowWidth());
 #else
-    font.loadFont("SourceSansPro-Black.otf", 40);
+    font.loadFont("SourceSansPro-Black.otf", 56);
     font.setLineLength(0.85 * ofGetWindowWidth());
 #endif
 
@@ -17,13 +17,16 @@ void sylloge_of_codes::setup(){
     skipIntro = false;
 
     // Misc setup
-	ofBackground(255,255,255);
-    currentSequenceIndex = -1;
-    ofSetFrameRate(30);
-    ofEnableAlphaBlending();
-    ofHideCursor();
+    frameRate = 30;
+    drawNow = false;
+    currentSequenceIndex = 0;
     loopCounter = 0;
     syllogeDebug = SYLLOGE_DEBUG;
+
+	ofBackground(255,255,255);
+    ofSetFrameRate(frameRate);
+    ofEnableAlphaBlending();
+    ofHideCursor();
 
     // Quick estimate of the number of words we can display onscreen at a time
     // String tokenizer in C++: http://stackoverflow.com/questions/10051679/c-tokenize-string
@@ -46,20 +49,23 @@ void sylloge_of_codes::setup(){
     //Poco::Timestamp ts = dt.timestamp();
     //Poco::LocalDateTime ldt(tzd, dt);
 
+    /*
     // SETUP INTRO TEXT
     TextLine introText;
     introText.text = gettext("sylloge of codes");
     introText.font = "SourceSansPro-Black.otf";
-    introText.fontSize = 40.0;
+    introText.fontSize = 56.0;
     introText.fColor = ofColor(255.0, 0.0, 0.0);
     introText.bColor = ofColor(255.0, 255.0, 255.0);
     introText.fade = false;
     introText.startTime = 0.0;
-    introText.duration = 10.0;
-    introText.delta = 0.0;
+    introText.duration = 10.0; // original, desired duration
+    //introText.duration = 1.0; // testing duration
+    introText.delta = 2.0;
     introText.xPos = centerX(font.stringWidth(introText.text));
     introText.yPos = centerY(font.stringHeight(introText.text));
     addToSequence(introText, sequence);
+    */
 
     // Read our XML file
     textLines.loadFile(textLinesFilename);
@@ -91,7 +97,7 @@ void sylloge_of_codes::setup(){
     TextLine dbText;
     dbText.text = completeText;
     dbText.font = "SourceSansPro-Black.otf";
-    dbText.fontSize = 60.0;
+    dbText.fontSize = 30.0;
     dbText.fColor = ofColor(255.0, 0.0, 0.0);
     dbText.bColor = ofColor(255.0, 255.0, 255.0);
     dbText.startTime = 0.0;
@@ -103,7 +109,8 @@ void sylloge_of_codes::setup(){
     addToSequence(dbText, sequence);
    
     
-    ofLog(OF_LOG_NOTICE, "Starting...");
+    ofLog(OF_LOG_NOTICE, "Starting sylloge of codes...");
+    setLastTime(sequence);
     ofResetElapsedTimeCounter();
 }
 
@@ -131,7 +138,7 @@ void sylloge_of_codes::selectRandomCode(Sylloge& code) {
     srand(time(0));
     int index = 1 + rand() % syllogeCount;
 
-    ofxSQLiteSelect sel = sqlite->select("id, code, comments, pseudonym, code_date, enabled").from("sylloge").where("id", 10);
+    ofxSQLiteSelect sel = sqlite->select("id, code, comments, pseudonym, code_date, enabled").from("sylloge").where("id", 46);
     sel.execute().begin();
 
     while (sel.hasNext()) {
@@ -168,18 +175,39 @@ void sylloge_of_codes::setSyllogeCount() {
 
 //--------------------------------------------------------------
 void sylloge_of_codes::update(){
+    int currentFrame = ofGetFrameNum();
 
-    if (currentSequenceIndex != -1) {
-        TextLine current;
-        current = sequence.at(currentSequenceIndex);
-        ofBackground(current.bColor.r,
-                current.bColor.g,
-                current.bColor.b);
-        ofFill();
-    } else {
-        ofBackground(255, 255, 255);
-        ofFill();
+    currentTextLine = sequence.at(currentSequenceIndex);
+    float startTime = currentTextLine.startTime;
+    float duration = currentTextLine.duration;
+    float delta = currentTextLine.delta;
+
+    // Set color
+    ofBackground(currentTextLine.bColor.r,
+            currentTextLine.bColor.g,
+            currentTextLine.bColor.b);
+    ofFill();
+
+    // Determine draw or not
+    if (currentFrame < (startTime + duration)) {
+        drawNow = true;
+    } else if ((currentFrame >= (startTime + duration)) && (currentFrame < (startTime + duration + delta))) {
+        drawNow = false;
+    } else if (currentFrame >= (startTime + duration + delta)) {
+        currentSequenceIndex += 1;
+    } else if (currentFrame >= lastTime) {
+        currentSequenceIndex = 0;
+        ofResetElapsedTimeCounter();
+        resetSequence(sequence);
+        loopCounter += 1;
     }
+}
+
+
+void sylloge_of_codes::setLastTime(vector<TextLine>& sequence) {
+    TextLine lastLine = sequence.at(sequence.size() - 1);
+
+    lastTime = (unsigned long long) (lastLine.startTime + lastLine.duration + lastLine.delta);
 }
 
 void sylloge_of_codes::segmentFadeIn(vector<TextLine>& sequence, int index) {
@@ -203,17 +231,22 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
         textLines.pushTag("line", i);
 
         textLine.font = textLines.getValue("font", "SourceSansPro-Black.otf");
-        textLine.fontSize = 30.0;
+        textLine.fontSize = textLines.getValue("fontSize", 30.0);
         const char *line = textLines.getValue("text", "").c_str();
         textLine.text = gettext(line);
         textLine.xPos = centerX(font.stringWidth(textLine.text));
         textLine.yPos = centerY(font.stringHeight(textLine.text));
         textLine.fColor = ofColor(textLines.getValue("fRed", 255), textLines.getValue("fGreen", 0), textLines.getValue("fBlue", 0), 255);
         textLine.bColor = ofColor(textLines.getValue("bRed", 255), textLines.getValue("bGreen", 255), textLines.getValue("bBlue", 255), 255);
-        textLine.startTime = 0.0;
-        textLine.delta = textLines.getValue("delta", 0.25);
-        textLine.duration = textLines.getValue("duration", 2);
+
+        textLine.startTime = floor(0.0 * frameRate);
+        textLine.duration = floor(textLines.getValue("duration", 2.0) * frameRate);
+        textLine.delta = floor(textLines.getValue("delta", 0.25) * frameRate);
         textLine.fade = false;
+        ofLog(OF_LOG_NOTICE, "Item: " + ofToString(i));
+        ofLog(OF_LOG_NOTICE, "Start Time: " + ofToString(textLine.startTime));
+        ofLog(OF_LOG_NOTICE, "Duration: " + ofToString(textLine.duration));
+        ofLog(OF_LOG_NOTICE, "Delta: " + ofToString(textLine.delta));
         /*
         ofColor bColor;
         bColor.r = textLines.getValue("bRed", 255);
@@ -234,28 +267,7 @@ void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
     sequence.erase(sequence.begin() + sequence.size() - 1, sequence.begin() + sequence.size());
     //loadTextLines(sequence);
     selectRandomCode(currentCode);
-
-    /* TODO
-     * Make this work with new TextLine setup
-    Segment newSegment;
-    ofxTextBlock textBlock;
-    textBlock.init("SourceSansPro-Regular.otf", 30);
-    // Annoying for string processing, but this is how it works...
-    std::ostringstream stringStream;
-    stringStream << DateTimeFormatter::format(currentCode.code_dt.timestamp(), "%W, %e %B %Y") << "\n" << currentCode.pseudonym << "\n" << currentCode.code;
-    completeText = stringStream.str();
-    textBlock.setText(completeText);
-    textBlock.wrapTextX(0.7 * ofGetWidth());
-    textBlock.setColor(255, 0, 0, 255);
-    newSegment.startTime = 0.0;
-    newSegment.delta = 3.0;
-    newSegment.duration = 25.0;
-    newSegment.fade = true;
-    newSegment.textBlock = textBlock;
-    newSegment.xPos = 0.25 * ofGetWidth();
-    newSegment.yPos = 10;
-    addToSequence(newSegment, sequence);
-    */
+    setLastTime(sequence);
 
     // Reset the fades
     for (unsigned int index = 0; index < sequence.size(); ++index) {
@@ -267,11 +279,36 @@ void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
 }
 
 //--------------------------------------------------------------
+void sylloge_of_codes::draw() {
+    currentTextLine = sequence.at(currentSequenceIndex);
+
+    if (drawNow) {
+        if (currentTextLine.fade) {
+            segmentFadeIn(sequence, currentSequenceIndex);
+        }
+#ifdef FTGLES
+        font.setColor(currentTextLine.fColor.r, currentTextLine.fColor.g, currentTextLine.fColor.b, currentTextLine.currentAlpha);
+#else
+        ofSetColor(currentTextLine.fColor.r, currentTextLine.fColor.g, currentTextLine.fColor.b, currentTextLine.currentAlpha);
+#endif
+        font.setSize(currentTextLine.fontSize);
+        font.drawString(currentTextLine.text, currentTextLine.xPos, currentTextLine.yPos);
+    }
+
+    if (syllogeDebug) {
+        ofSetColor(0, 0, 0, 255);
+        elapsedTimeString = "Elapsed time: " + ofToString(ofGetElapsedTimef());
+        ofDrawBitmapString(elapsedTimeString, 10, 10);
+        fpsString = "frame rate: "+ ofToString(ofGetFrameRate(), 2);
+        ofDrawBitmapString(fpsString, 10, 30);
+        loopCounterString = "Loop count: "+ ofToString(loopCounter);
+        ofDrawBitmapString(loopCounterString, 10, 50);
+    }
+
+}
+
+/* ORIGINAL DRAW METHOD
 void sylloge_of_codes::draw(){
-	//ofBackground(255, 255, 255);
-	//ofFill();
-
-
     TextLine textLine;
     
     for (unsigned int index = 0; index < sequence.size(); ++index) {
@@ -287,10 +324,14 @@ void sylloge_of_codes::draw(){
                 }
                 textLine = sequence.at(index);
 #ifdef FTGLES
-    font.setColor(textLine.fColor.r, textLine.fColor.g, textLine.fColor.b, textLine.currentAlpha);
+                font.setColor(textLine.fColor.r, textLine.fColor.g, textLine.fColor.b, textLine.currentAlpha);
 #else
-    ofSetColor(textLine.fColor.r, textLine.fColor.g, textLine.fColor.b, textLine.currentAlpha);
+                ofSetColor(textLine.fColor.r, textLine.fColor.g, textLine.fColor.b, textLine.currentAlpha);
 #endif
+                //font.drawString(textLine.text, textLine.xPos, textLine.yPos);
+                //ofRectangle foo = font.getStringBoundingBox(textLine.text, 0, textLine.yPos);
+                //ofLog(OF_LOG_NOTICE, ofToString(foo));
+                font.setSize(textLine.fontSize);
                 font.drawString(textLine.text, textLine.xPos, textLine.yPos);
                 currentSequenceIndex = index;
             }
@@ -316,6 +357,7 @@ void sylloge_of_codes::draw(){
         loopCounter += 1;
     }
 }
+*/
 
 //--------------------------------------------------------------
 void sylloge_of_codes::keyPressed (int key){

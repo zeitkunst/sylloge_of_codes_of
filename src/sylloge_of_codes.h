@@ -19,7 +19,7 @@
 #include "ofxXmlSettings.h"
 
 #ifdef FTGLES
-#include "ofxFTGLESFont.h"
+#include "ofxFTGLES.h"
 #else
 #include "ofxFTGL.h"
 #endif
@@ -133,7 +133,8 @@ class sylloge_of_codes : public ofBaseApp{
         void loadTextLines(vector<TextLine>& sequence);
     private:
 #ifdef FTGLES
-        ofxFTGLESFont font;
+        //ofxFTGLESFont font;
+        ofxFTGLESSimpleLayout font;
 #else
         //ofxFTGLFont font;
         ofxFTGLSimpleLayout font;

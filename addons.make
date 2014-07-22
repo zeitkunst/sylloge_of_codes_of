@@ -1,3 +1,3 @@
 ofxSQLite
 ofxXmlSettings
-ofxFTGL
+ofxFTGLES

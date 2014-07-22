@@ -4,10 +4,11 @@
 void sylloge_of_codes::setup(){
 #ifdef FTGLES
     // For FTGLES
-    font.loadFont("SourceSansPro-Black.otf", 56, true, true);        
+    font.loadFont("SourceSansPro-Black.otf", 36, true, true);        
+    font.setLineLength(0.8 * ofGetWindowWidth());
 #else
     font.loadFont("SourceSansPro-Black.otf", 40);
-    font.setLineLength(0.8 * ofGetWindowWidth());
+    font.setLineLength(0.85 * ofGetWindowWidth());
 #endif
 
     // Setup settings filenames
@@ -18,7 +19,7 @@ void sylloge_of_codes::setup(){
     // Misc setup
 	ofBackground(255,255,255);
     currentSequenceIndex = -1;
-    ofSetFrameRate(60);
+    ofSetFrameRate(30);
     ofEnableAlphaBlending();
     ofHideCursor();
     loopCounter = 0;
@@ -49,7 +50,7 @@ void sylloge_of_codes::setup(){
     TextLine introText;
     introText.text = gettext("sylloge of codes");
     introText.font = "SourceSansPro-Black.otf";
-    introText.fontSize = 60.0;
+    introText.fontSize = 40.0;
     introText.fColor = ofColor(255.0, 0.0, 0.0);
     introText.bColor = ofColor(255.0, 255.0, 255.0);
     introText.fade = false;
@@ -130,7 +131,7 @@ void sylloge_of_codes::selectRandomCode(Sylloge& code) {
     srand(time(0));
     int index = 1 + rand() % syllogeCount;
 
-    ofxSQLiteSelect sel = sqlite->select("id, code, comments, pseudonym, code_date, enabled").from("sylloge").where("id", index);
+    ofxSQLiteSelect sel = sqlite->select("id, code, comments, pseudonym, code_date, enabled").from("sylloge").where("id", 10);
     sel.execute().begin();
 
     while (sel.hasNext()) {
@@ -149,6 +150,7 @@ void sylloge_of_codes::selectRandomCode(Sylloge& code) {
 float sylloge_of_codes::centerX(float stringWidth) {
     float textCenter = stringWidth / 2.0f;
 
+    //return (ofGetWindowWidth()/2 - textCenter);
     return (ofGetWindowWidth()/2 - textCenter);
 }
 

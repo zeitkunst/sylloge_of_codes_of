@@ -83,8 +83,8 @@ void sylloge_of_codes::setup(){
     firstLine.bColor = ofColor(255, 255, 255, 255);
 
     firstLine.startTime = 0;
-    firstLine.duration = 1 * 1000;
-    firstLine.delta = 1 * 1000;
+    firstLine.duration = 10 * 1000;
+    firstLine.delta = 5 * 1000;
     firstLine.fade = false;
     addToSequence(firstLine, sequence);
 

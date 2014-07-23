@@ -29,7 +29,7 @@ void sylloge_of_codes::setup(){
     currentSequenceIndex = 0;
     loopCounter = 1;
     syllogeDebug = SYLLOGE_DEBUG;
-    skipIntro = true;
+    skipIntro = false;
     codeFragmentsAdded = 0;
 
 	ofBackground(255,255,255);
@@ -43,14 +43,89 @@ void sylloge_of_codes::setup(){
     ofLog(OF_LOG_NOTICE, "window height: %d", ofGetWindowHeight());
 
     // TODO
-    // Set real tzd
-    tzd = 5;
+    // Set real tzd based on system locale
+    //
+    // Right now we hack this by hand.
+    // Currently it's 4; will change back to 5 when Chile goes to DST. But it shouldn't affect the output of things, since we're not outputing the time, only the date
+    tzd = 4;
 
     //std::string s("Sat, 1 Jan 2005 12:00:00 GMT");
     //DateTime dt;
     //DateTimeParser::parse(DateTimeFormat::RFC1123_FORMAT, s, dt, tzd);
     //Poco::Timestamp ts = dt.timestamp();
     //Poco::LocalDateTime ldt(tzd, dt);
+
+
+    settings.loadFile(settingsFilename);
+    string databaseLocation = settings.getValue("settings:databaseLocation", "/home/nknouf/sylloge_of_codes.sqlite");
+
+    // ensure we also have something to display
+    TextLine initialLine;  
+    initialLine.font = "SourceSansPro-Black.otf";
+    initialLine.fontSize = 100.0;
+    initialLine.text = gettext("sylloge of codes");
+
+    font.setSize(initialLine.fontSize);
+    ofRectangle rect = font.getStringBoundingBox(initialLine.text, 0, 0);
+            
+    float width = rect.width;
+    float height = rect.height;
+    
+    initialLine.xPos = (ofGetWindowWidth()/2) - (width/2);
+    initialLine.yPos = (ofGetWindowHeight()/2) + (height/2);
+
+    initialLine.fColor = ofColor(255, 0, 0, 255);
+    initialLine.bColor = ofColor(255, 255, 255, 255);
+
+    initialLine.startTime = 0;
+    initialLine.duration = 10 * 1000;
+    initialLine.delta = 5 * 1000;
+    initialLine.fade = false;
+    addToSequence(initialLine, sequence);
+
+    // Second line
+    initialLine.text = gettext("a project by\nnicholas knouf");
+    initialLine.fontSize = 60;
+
+    font.setSize(initialLine.fontSize);
+    rect = font.getStringBoundingBox(initialLine.text, 0, 0);
+            
+    width = rect.width;
+    height = rect.height;
+    
+    initialLine.xPos = (ofGetWindowWidth()/2) - (width/2);
+    initialLine.yPos = (ofGetWindowHeight()/2) + (height/2);
+
+    initialLine.fColor = ofColor(255, 0, 0, 255);
+    initialLine.bColor = ofColor(255, 255, 255, 255);
+
+    initialLine.startTime = 0;
+    initialLine.duration = 5 * 1000;
+    initialLine.delta = 2 * 1000;
+    initialLine.fade = false;
+    addToSequence(initialLine, sequence);
+
+    // Third line
+    initialLine.text = gettext("spanish translation by claudia pederson");
+    initialLine.fontSize = 60;
+
+    font.setSize(initialLine.fontSize);
+    rect = font.getStringBoundingBox(initialLine.text, 0, 0);
+            
+    width = rect.width;
+    height = rect.height;
+    
+    initialLine.xPos = (ofGetWindowWidth()/2) - (width/2);
+    initialLine.yPos = (ofGetWindowHeight()/2) + (height/2);
+
+    initialLine.fColor = ofColor(255, 0, 0, 255);
+    initialLine.bColor = ofColor(255, 255, 255, 255);
+
+    initialLine.startTime = 0;
+    initialLine.duration = 5 * 1000;
+    initialLine.delta = 2 * 1000;
+    initialLine.fade = false;
+    addToSequence(initialLine, sequence);
 
     // Read our XML file
     textLines.loadFile(textLinesFilename);
@@ -61,35 +136,7 @@ void sylloge_of_codes::setup(){
         loadTextLines(sequence);
     }
 
-    settings.loadFile(settingsFilename);
-    string databaseLocation = settings.getValue("settings:databaseLocation", "/home/nknouf/sylloge_of_codes.sqlite");
-
-    // ensure we also have something to display
-    TextLine firstLine;  
-    firstLine.font = "SourceSansPro-Black.otf";
-    firstLine.fontSize = 100.0;
-    firstLine.text = gettext("sylloge of codes");
-
-    font.setSize(firstLine.fontSize);
-    ofRectangle rect = font.getStringBoundingBox(firstLine.text, 0, 0);
-            
-    float width = rect.width;
-    float height = rect.height;
-    
-    firstLine.xPos = (ofGetWindowWidth()/2) - (width/2);
-    firstLine.yPos = (ofGetWindowHeight()/2) + (height/2);
-
-    firstLine.fColor = ofColor(255, 0, 0, 255);
-    firstLine.bColor = ofColor(255, 255, 255, 255);
-
-    firstLine.startTime = 0;
-    firstLine.duration = 10 * 1000;
-    firstLine.delta = 5 * 1000;
-    firstLine.fade = false;
-    addToSequence(firstLine, sequence);
-
-
-
+    // Setup database infos
     sqlite = new ofxSQLite(databaseLocation); 
 
     // Ensure that the settings are saved
@@ -99,6 +146,7 @@ void sylloge_of_codes::setup(){
     // Update our random code
     updateRandomCode();
 
+    // Ensure that things are set for the first runthrough
     currentTextLine = sequence.at(currentSequenceIndex);
     font.setSize(currentTextLine.fontSize);
 
@@ -240,8 +288,8 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
     dbText.fColor = ofColor(255.0, 0.0, 0.0);
     dbText.bColor = ofColor(255.0, 255.0, 255.0);
     dbText.startTime = 0;
+    dbText.duration = 30.0 * 1000;
     dbText.delta = 1.0 * 1000;
-    dbText.duration = 1.0 * 1000;
     dbText.fade = false;
 
     // Set the font to be the correct size

@@ -26,7 +26,7 @@
 #include "ofxFTGL.h"
 #endif
 
-#define SYLLOGE_DEBUG 1
+#define SYLLOGE_DEBUG 0
 
 using Poco::Timestamp;
 using Poco::DateTime;
@@ -122,7 +122,7 @@ class sylloge_of_codes : public ofBaseApp{
 
         // Current sylloge item
         Sylloge currentCode;
-        int currentSequenceIndex;
+        unsigned int currentSequenceIndex;
         float alpha;
         void addToSequence(TextLine& textLine, vector<TextLine>& sequence);
         void segmentFadeIn(vector<TextLine>& sequence, int index);

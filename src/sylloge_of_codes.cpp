@@ -278,7 +278,7 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
         ostringstream imploded;
 
         int maxChars = 600; 
-        for(int i = 0; i < words.size(); i++) {
+        for(unsigned int i = 0; i < words.size(); i++) {
             runningChars += words.at(i).size() + 1;
 
             if (runningChars <= maxChars) {
@@ -305,7 +305,7 @@ void sylloge_of_codes::addCodeToSequence(Sylloge& code) {
         currentFragments.push_back(imploded.str());
     }
 
-    for (int i = 0; i < currentFragments.size(); i++) {
+    for (unsigned int i = 0; i < currentFragments.size(); i++) {
         dbText.fontSize = standardFontSize;
 
         // Annoying for string processing, but this is how it works...
@@ -370,7 +370,7 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
 
 void sylloge_of_codes::resetSequence(vector<TextLine>& sequence) {
     // Pop the random code fragments added
-    for (int i = 0; i < codeFragmentsAdded; i++) {
+    for (unsigned int i = 0; i < codeFragmentsAdded; i++) {
         sequence.pop_back();
     }
     

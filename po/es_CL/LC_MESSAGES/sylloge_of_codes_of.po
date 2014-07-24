@@ -1,19 +1,19 @@
 #
-# SOME DESCRIPTIVE TITLE
+# Spanish translations for PACKAGE package
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
-#, fuzzy
+# Nicholas A Knouf <ccp9@cornell.edu>, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
 "POT-Creation-Date: 2014-07-24 14:30-04:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2014-07-24 14:31-0400\n"
+"Last-Translator: Nicholas A Knouf <ccp9@cornell.edu>\n"
+"Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
+"Language: es_CL\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/sylloge_of_codes.cpp:66
 msgid "sylloge of codes"

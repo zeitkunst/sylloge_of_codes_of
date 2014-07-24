@@ -79,7 +79,7 @@ void sylloge_of_codes::setup(){
 
     initialLine.startTime = 0;
     initialLine.duration = 10 * 1000;
-    initialLine.delta = 5 * 1000;
+    initialLine.delta = 2 * 1000;
     initialLine.fade = false;
     addToSequence(initialLine, sequence);
 
@@ -400,8 +400,8 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
         textLine.bColor = ofColor(textLines.getValue("bRed", 255), textLines.getValue("bGreen", 255), textLines.getValue("bBlue", 255), 255);
 
         textLine.startTime = 0;
-        textLine.duration = textLines.getValue("duration", 4.0) * 1000;
-        textLine.delta = textLines.getValue("delta", 0.50) * 1000;
+        textLine.duration = textLines.getValue("duration", 3.5) * 1000;
+        textLine.delta = textLines.getValue("delta", 0.35) * 1000;
         textLine.fade = false;
         /*
         ofColor bColor;

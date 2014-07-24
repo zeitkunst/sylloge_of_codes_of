@@ -12,9 +12,9 @@
         <font>SourceSansPro-Black.otf</font>
     </line>
     <line>
-        <text i18n:translate="">This is a time when electronic communications</text>
-        <duration>2.00</duration>
-        <delta>0.25</delta>
+        <text i18n:translate="">We have a problem.</text>
+        <duration>5.00</duration>
+        <delta>2.00</delta>
         <fRed>255</fRed>
         <fGreen>0</fGreen>
         <fBlue>0</fBlue>
@@ -24,8 +24,8 @@
         <font>SourceSansPro-Black.otf</font>
     </line>
     <line>
-        <text>
-            are surveilled the world over.           
+        <text i18n:translate="">
+            Our electronic communications are constantly surveilled            
         </text>
         <duration>2.00</duration>
         <delta>0.25</delta>
@@ -39,8 +39,8 @@
 
     </line>
     <line>
-        <text>
-            Little seems to escape           
+        <text i18n:translate="">
+            by the NSA or the GCHQ. 
         </text>
         <duration>2.00</duration>
         <delta>0.25</delta>
@@ -54,8 +54,8 @@
 
     </line>
     <line>
-        <text>
-            the computer programs           
+        <text i18n:translate="">
+            Little seems to escape
         </text>
         <duration>2.00</duration>
         <delta>0.25</delta>
@@ -69,8 +69,8 @@
 
     </line>
     <line>
-        <text>
-            and human analysts       
+        <text i18n:translate="">
+            either the computer programs or human analysts.
         </text>
         <duration>2.00</duration>
         <delta>0.25</delta>
@@ -84,96 +84,411 @@
 
     </line>
     <line>
-        <text>
-            that pour over our electronic data 
+        <text i18n:translate="">
+            Both pour over our data as it flows
         </text>
     </line>
     <line>
-        <text>
-            as it traverses national boundaries
-        </text>
-    </line>
-    <line>
-        <text>
-            through undersea cables
+        <text i18n:translate="">
+            under the sea
         </text>
         <fRed>0</fRed>
         <fGreen>0</fGreen>
         <fBlue>255</fBlue>
     </line>
     <line>
-        <text>
-            or the wireless ether.           
+        <text i18n:translate="">
+            or through the ether.
         </text>
     </line>
     <line>
-        <text>
+        <text i18n:translate="">
             Sent in the clear,
         </text>
     </line>
     <line>
-        <text>
-            our data is understandable
+        <text i18n:translate="">
+            it's "trivial" to dig through it,
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            as the hackers like to say.
         </text>
     </line>
     <line>
-        <text>
-            by anyone with a bit of technical knowledge.
-        </text>
-    </line>
-    <line>
-        <text>
+        <text i18n:translate="">
             So we're asked to encrypt it,
         </text>
     </line>
     <line>
-        <text>
-            to obfuscate it
+        <text i18n:translate="">
+            to obfuscate it in some way.
         </text>
     </line>
     <line>
-        <text>
-            in some way.
+        <text i18n:translate="">
+            Yet encryption is not a panacea,
         </text>
     </line>
     <line>
-        <text>
-            But these same programs and analysts
+        <text i18n:translate="">
+            for it too can be bypassed in a plethora of ways.
         </text>
     </line>
     <line>
-        <text>
-            have made these encryption techniques weak,
+        <text i18n:translate="">
+            We seem to be stuck in a catch-22,
         </text>
     </line>
     <line>
-        <text>
-            opening backdoors
+        <text i18n:translate="">
+            damned if we do,
         </text>
     </line>
     <line>
-        <text>
-            into seemingly secure communications.
+        <text i18n:translate="">
+            damned if we don't.
         </text>
     </line>
     <line>
-        <text>
-            What we're left feeling is
+        <text i18n:translate="">
+            So we feel a lack of power,
         </text>
     </line>
     <line>
-        <text>
-            helplessness,
+        <text i18n:translate="">
+            we feel helpless,
         </text>
     </line>
     <line>
-        <text>
-            a distinct lack of power to respond, 
+        <text i18n:translate="">
+            we feel cynical.
         </text>
     </line>
     <line>
-        <text>
-            and a dangerous level of cynicism.
+        <text i18n:translate="">
+            What can we do?
+        </text>
+        <duration>5.00</duration>
+        <delta>3.0</delta>
+    </line>
+    <line>
+        <text i18n:translate="">
+            We can think more poetically.
+        </text>
+        <duration>5.00</duration>
+        <delta>3.0</delta>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Computers are rather silly machines,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            only able to "understand"
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            the most basic of information.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            They can't handle the poetic
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            nor sarcasm,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            and deal pooly with hidden messages,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            pidgin,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            and nuanced meanings.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            They can't handle the unquantifiable.
+        </text>
+        <duration>5.00</duration>
+        <delta>3.0</delta>
+    </line>
+    <line>
+        <text i18n:translate="">
+            This implies that we should create
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            more poetic forms of communication
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            that are resistant to computational analysis.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Consider this an invitation.
+        </text>
+        <duration>5.00</duration>
+        <delta>3.0</delta>
+    </line>
+    <line>
+        <text i18n:translate="">
+            An invitation to create
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            a new sylloge of codes.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            A sylloge is a collection of texts.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            It's a reference to an old tradition
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            where travellers would record ancient Greek and Roman inscriptions.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Today,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            let's create a new sylloge,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            a new collection of codes that others can use.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            You might wonder what these codes could be.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Well, remember Eugenio Dittborn,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            who piggy-backed on the postal network
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            in order to transfer his artwork out of Chile.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Or remember that tale of Borges,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            where an angent kills a man with the same name as a secret location,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            in order to transmit this information to his handlers
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            through a newspaper headline.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            There's the artist Kate Rich,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            who in "Feral Trade",
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            allows anyone to request that strangers
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            bring you foodstuffs from far-off corners of the globe.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Peraps you have a sepcial way of communicating
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            with a friend or partner.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Maybe you had a secret language as a child.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Or you communicate the most amazing insights through a poem.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            All of these methods are potential ways to resist the NSA or the GCHQ.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            But we must be discreet about it.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            That's why the box in front of you exists.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            It's the sylloge itself.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            It contains a computer with a wireless network
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            that is private to this space.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            The codes will only exist within this room.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            To contribute, connect to the wireless network "sylloge_of_codes".
+        </text>
+        <duration>10.00</duration>
+        <delta>2.0</delta>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Then go to your web browser and type in "sylloge.of.codes".
+        </text>
+        <duration>10.00</duration>
+        <delta>2.0</delta>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            You'll be taken to the page where you can contribute.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            You'll be able to take one code
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            —one contributed by someone else—
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            with you when you leave.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Take it with you,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            think about it,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            pass it on,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            perhaps use it in your daily life.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            When the power of any state feels too impenetrable,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            we can fall into the depths of cynicism.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Instead,
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            let's use our imagination to reinvent how we communicate.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            And now, for a contribtion from a prior visitor to this space:
         </text>
     </line>
 </lines>

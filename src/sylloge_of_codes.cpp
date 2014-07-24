@@ -400,8 +400,8 @@ void sylloge_of_codes::loadTextLines(vector<TextLine>& sequence) {
         textLine.bColor = ofColor(textLines.getValue("bRed", 255), textLines.getValue("bGreen", 255), textLines.getValue("bBlue", 255), 255);
 
         textLine.startTime = 0;
-        textLine.duration = textLines.getValue("duration", 2.0) * 1000;
-        textLine.delta = textLines.getValue("delta", 0.25) * 1000;
+        textLine.duration = textLines.getValue("duration", 4.0) * 1000;
+        textLine.delta = textLines.getValue("delta", 0.50) * 1000;
         textLine.fade = false;
         /*
         ofColor bColor;

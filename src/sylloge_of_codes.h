@@ -144,7 +144,8 @@ class sylloge_of_codes : public ofBaseApp{
         ofxXmlSettings settings;
         ofxXmlSettings textLines;
         static const string settingsFilename;
-        static const string textLinesFilename;
+        string textLinesFilename;
+        string locale;
 
         string elapsedTimeString;
         string fpsString;

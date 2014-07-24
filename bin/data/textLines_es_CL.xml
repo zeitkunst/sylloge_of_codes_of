@@ -1,0 +1,1005 @@
+<lines xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="sylloge_of_codes">
+    <line>
+        <text i18n:translate="">Hola visitante,</text>
+        <duration>5.00</duration>
+        <delta>3.0</delta>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+    </line>
+    <line>
+        <text i18n:translate="">Tenemos un problema.</text>
+        <duration>7.00</duration>
+        <delta>2.00</delta>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Nuestras comunicaciones electrónicas están constantemente vigilados 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            por la NSA o el GCHQ. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Poco parece escapar 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            a los programas informáticos o analistas humanos. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+Ambos examinan nuestros datos a medida que fluyen
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+             bajo el mar 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            o por el éter. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Enviada en el claro, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            es "trivial" decifrar information. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Así que los hackers nos piden para cifrarla.
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Sin embargo, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            el cifrado no es una panacea, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            ya que también se puede decifrar a el cifrado. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Parece que estamos atrapados en un “catch-22,” 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+palos porque bogas, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            palos porque no bogas. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Así que nos sentimos impotentes, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            cínicos. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            ¿Qué podemos hacer? 
+        </text>
+        <duration>5.00</duration>
+        <delta>1.5</delta>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Podemos pensar más poéticamente. 
+        </text>
+        <duration>5.00</duration>
+        <delta>2.0</delta>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Las computadoras son máquinas tontas,
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            sólo capaces de "entender" 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            la más básica de información. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Si embargo no pueden manejar la poética 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            ni el sarcasmo, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            y tampoco mensajes ambiguas
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            y lenguas híbridas.  
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            La computation no “intiende” el incuantificable. 
+        </text>
+        <duration>5.00</duration>
+        <delta>3.0</delta>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Este hecho sugerí que debemos crear 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            formas de comunicación poética
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            capaces de resistir el análisis computacional. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Considere esto una invitación. 
+        </text>
+        <duration>5.00</duration>
+        <delta>3.0</delta>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Una invitación a crear 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            un nuevo Sylloge de códigos. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Un Sylloge es una colección de textos.
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Es una referencia a una tradición antigua, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            el la cual viajeros registraven antiguas inscripciones griegas y romanas. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Hoy, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            pretendemos crear un nuevo Sylloge, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            una nueva colección de códigos que otros pueden utilizar. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Como se puede imaginar la creación de estes códigos? 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Por ejemplo, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            recuerde los airmail paintings de Eugenio Dittborn. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Este artista aprovecho la red postal 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            con el fin de transferir sus obras de arte fuera del país 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            durante el gobierno de Pinochet en Chile. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            O recorde una historia de Borges, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            donde un agente mata a un hombre con el mismo nombre de un lugar secreto 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            con el fin de transmitir esta información a sus contactos 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            a través de un titulo en el periódico. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            O mas recién, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            el trabajo de la artista Australiana Kate Rich, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            "Feral Trade", 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            creado para permiter a cualquier persona solicitar la ahuyda de viajeros 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            con el fin de obtener alimentos desde los rincones lejanos del planeta. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Tal vez usted tiene una manera especial de comunicarse 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            con una amiga o compañera. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Tal vez hablaba un lenguaje secreto cuando era niña. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            ¿O utiliza poesia para comunicar sentimientos? 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+
+    <line>
+        <text i18n:translate="">
+            Todos estos métodos son posibles formas de resistir la NSA o el GCHQ. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+                        But we must be discreet about it.
+        </text>
+    </line>
+    <line>
+        <text i18n:translate="">
+            Es por eso que existe la caja en frente de usted. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Esa caja es el propio Sylloge. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Contiene una computadora con una red inalámbrica 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            limitada a este espacio. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Los códigos sólo existen dentro de esta galeria. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Para contribuir, conectese a la red "sylloge_of_codes" inalámbricos.  
+        </text>
+        <duration>10.00</duration>
+        <delta>2.0</delta>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Abra su navegador web y escriba "sylloge.of.codes". 
+        </text>
+        <duration>10.00</duration>
+        <delta>2.0</delta>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Sera llevado a la página donde usted puede contribuir. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Podra tambien descargar un código, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            uno aportado por otra visitante. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Llévelo con usted, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            pense en ello, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            compártelo, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            quizás puede usarlo en su vida diaria. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            Cuando el poder nos parece impenetrable, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            corremos el riesgo de alimentar el cinismo. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>255</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>0</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            En lugar de ello, 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            proponemos usar nuestra imaginación 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+    <line>
+        <text i18n:translate="">
+            para reinventar la forma en que nos comunicamos. 
+        </text>
+        <fRed>255</fRed>
+        <fGreen>255</fGreen>
+        <fBlue>255</fBlue>
+        <bRed>0</bRed>
+        <bGreen>0</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+
+    <line>
+        <text i18n:translate="">
+            Y ahora, por una contribución de un visitante previo:
+        </text>
+        <fRed>255</fRed>
+        <fGreen>0</fGreen>
+        <fBlue>0</fBlue>
+        <bRed>255</bRed>
+        <bGreen>255</bGreen>
+        <bBlue>255</bBlue>
+
+    </line>
+</lines>
+
+

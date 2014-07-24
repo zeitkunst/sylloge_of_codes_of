@@ -21,7 +21,17 @@ void sylloge_of_codes::setup(){
 
     // Setup settings filenames
     const string settingsFilename = "sylloge_of_codes_settings.xml";
-    const string textLinesFilename = "textLines.xml";
+
+    // Current hack for getting and setting locale, given that we don't have a 1-1 match between English lines and other languages lines
+    string textLinesFilename = "textLines.xml";
+    string lang = getenv("LANG");
+    if (lang.substr(0, 2) == "en") {
+        textLinesFilename = "textLines.xml";
+        locale = "en";
+    } else if (lang.substr(0, 5) == "es_CL") {
+        textLinesFilename = "textLines_es_CL.xml";
+        locale = "es_CL";
+    }
 
     // Misc setup
     frameRate = 30;
@@ -63,7 +73,12 @@ void sylloge_of_codes::setup(){
     TextLine initialLine;  
     initialLine.font = "SourceSansPro-Black.otf";
     initialLine.fontSize = 100.0;
-    initialLine.text = gettext("sylloge of codes");
+    if (locale == "en") {
+        initialLine.text = gettext("sylloge of codes");
+    } else if (locale == "es_CL") {
+        initialLine.text = gettext("sylloge de códigos");
+
+    }
 
     font.setSize(initialLine.fontSize);
     ofRectangle rect = font.getStringBoundingBox(initialLine.text, 0, 0);
@@ -84,7 +99,12 @@ void sylloge_of_codes::setup(){
     addToSequence(initialLine, sequence);
 
     // Second line
-    initialLine.text = gettext("a project by\nnicholas knouf");
+    if (locale == "en") {
+        initialLine.text = gettext("a project by\nnicholas knouf");
+    } else if (locale == "es_CL") {
+        initialLine.text = gettext("un proyecto por\nnicholas knouf");
+    }
+
     initialLine.fontSize = 60;
 
     font.setSize(initialLine.fontSize);
@@ -106,7 +126,12 @@ void sylloge_of_codes::setup(){
     addToSequence(initialLine, sequence);
 
     // Third line
-    initialLine.text = gettext("spanish translation by claudia pederson");
+    if (locale == "en") {
+        initialLine.text = gettext("spanish translation by claudia pederson");
+    } else if (locale == "es_CL") {
+        initialLine.text = gettext("traducido por claudia pederson");
+    }
+
     initialLine.fontSize = 60;
 
     font.setSize(initialLine.fontSize);
@@ -132,7 +157,7 @@ void sylloge_of_codes::setup(){
 
     // Load the file into our structure
     if (!skipIntro) {
-        ofLog(OF_LOG_NOTICE, "Loading text...");
+        ofLog(OF_LOG_NOTICE, "Loading text from " + textLinesFilename); 
         loadTextLines(sequence);
     }
 

@@ -1,6 +1,6 @@
 <lines xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="sylloge_of_codes">
     <line>
-        <text i18n:translate="">Hola visitante,</text>
+        <text i18n:translate="">Estimado visitante,</text>
         <duration>5.00</duration>
         <delta>3.0</delta>
         <fRed>255</fRed>
@@ -23,7 +23,7 @@
     </line>
     <line>
         <text i18n:translate="">
-            Nuestras comunicaciones electrónicas están constantemente vigilados 
+            Nuestras comunicaciones electrónicas están constantemente vigiladas 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -59,7 +59,7 @@
     </line>
     <line>
         <text i18n:translate="">
-            a los programas informáticos o analistas humanos. 
+            a los programas informáticos o a los analistas humanos. 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -119,7 +119,7 @@ Ambos examinan nuestros datos a medida que fluyen
     </line>
     <line>
         <text i18n:translate="">
-            es "trivial" decifrar information. 
+            es "trivial" decifrar información. 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -167,7 +167,7 @@ Ambos examinan nuestros datos a medida que fluyen
     </line>
     <line>
         <text i18n:translate="">
-            ya que también se puede decifrar a el cifrado. 
+            ya que el cifrado tambien puede ser decifrado . 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -215,7 +215,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            Así que nos sentimos impotentes, 
+            Así es que nos sentimos impotentes, 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -290,7 +290,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            la más básica de información. 
+            la información más básica. 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -302,7 +302,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            Si embargo no pueden manejar la poética 
+            Sin embargo no pueden manejar la poética 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -326,7 +326,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            y tampoco mensajes ambiguas
+            y tampoco mensajes ambiguos
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -338,7 +338,8 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            y lenguas híbridas.  
+           ni lenguas híbridas.  
+            
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -350,7 +351,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            La computation no “intiende” el incuantificable. 
+            La computation no “intiende”  lo incuantificable. 
         </text>
         <duration>5.00</duration>
         <delta>3.0</delta>
@@ -364,7 +365,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            Este hecho sugerí que debemos crear 
+            Este hecho sugiere que debemos crear 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -438,7 +439,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            Un Sylloge es una colección de textos.
+            Un Sylloge es una colección de textos,
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -450,7 +451,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            Es una referencia a una tradición antigua, 
+            una referencia a una tradición antigua, 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -462,7 +463,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            el la cual viajeros registraven antiguas inscripciones griegas y romanas. 
+             en la cual viajeros registraban antiguas inscripciones griegas y romanas. 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -522,7 +523,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            Por ejemplo, 
+            Por ejemplo; 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -534,7 +535,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            recuerde los airmail paintings de Eugenio Dittborn. 
+            recuerda uds. Las pinturas aeropostales de Eugenio Dittborn?. 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -558,7 +559,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            con el fin de transferir sus obras de arte fuera del país 
+            con el fin de transitar sus obras de arte fuera del país 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -630,7 +631,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            O mas recién, 
+            O mas recientemente podemos observar 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -666,7 +667,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            creado para permiter a cualquier persona solicitar la ahuyda de viajeros 
+            creado para permiter a cualquier persona solicitar la asistencia de viajeros 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -678,7 +679,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            con el fin de obtener alimentos desde los rincones lejanos del planeta. 
+            con el fin de obtener alimentos desde los rincones mas lejanos del planeta. 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -726,7 +727,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            ¿O utiliza poesia para comunicar sentimientos? 
+            ¿O utiliza poesia para comunicar emociones y semtimientos? 
         </text>
         <fRed>255</fRed>
         <fGreen>255</fGreen>
@@ -756,7 +757,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            Es por eso que existe la caja en frente de usted. 
+            Es por eso que existe la caja frente de usted. 
         </text>
         <fRed>255</fRed>
         <fGreen>0</fGreen>
@@ -893,7 +894,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            pense en ello, 
+            piense en el, 
         </text>
         <fRed>255</fRed>
         <fGreen>0</fGreen>
@@ -905,7 +906,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            compártelo, 
+            compártalo, 
         </text>
         <fRed>255</fRed>
         <fGreen>0</fGreen>
@@ -917,7 +918,7 @@ palos porque bogas,
     </line>
     <line>
         <text i18n:translate="">
-            quizás puede usarlo en su vida diaria. 
+            quizás pueda usarlo en su vida diaria. 
         </text>
         <fRed>255</fRed>
         <fGreen>0</fGreen>
